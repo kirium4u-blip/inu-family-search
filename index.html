@@ -1,321 +1,96 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>인천대학교 가족회사 검색</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f5f5f5;
-    }
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-
-    /* 로고 + 제목 */
-    .logo-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding-top: 10px;
-      margin-bottom: 20px;
-    }
-    .logo-title img {
-      height: 32px;
-      width: auto;
-    }
-    .logo-title h1 {
-      font-size: 20px;
-      font-weight: 700;
-      margin: 0;
-    }
-
-    /* 검색 박스 */
-    .search-box {
-      background: #ffffff;
-      padding: 16px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      font-size: 14px;
-      margin-bottom: 4px;
-      font-weight: 600;
-    }
-    input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 12px;
-      border-radius: 6px;
-      border: 1px solid #cccccc;
-      font-size: 15px;
-      box-sizing: border-box;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 6px;
-      background: #0066cc;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    button:active {
-      opacity: 0.9;
-    }
-    .hint {
-      font-size: 12px;
-      color: #666;
-      margin-bottom: 10px;
-    }
-
-    .result-area {
-      background: #ffffff;
-      padding: 10px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    /* PC 기본: 테이블 형태 */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
-    th, td {
-      border: 1px solid #e0e0e0;
-      padding: 8px;
-      text-align: left;
-      word-break: keep-all;
-      vertical-align: top;
-    }
-    th {
-      background: #f0f0f0;
-    }
-
-    .no-result {
-      text-align: center;
-      padding: 16px;
-      color: #777;
-      font-size: 14px;
-    }
-
-    /* 검색어 하이라이트용 */
-    .keyword {
-      color: #0056d6;
-      font-weight: 600;
-    }
-
-    /* ===== 모바일(좁은 화면)에서 카드형으로 전환 ===== */
-    @media (max-width: 768px) {
-      .container {
-        padding: 12px;
-      }
-
-      table {
-        border: 0;
-      }
-      thead {
-        display: none;   /* 헤더 숨김 */
-      }
-      table, tbody, tr, td {
-        display: block;
-        width: 100%;
-      }
-
-      tr {
-        margin-bottom: 14px;
-        border-radius: 14px;
-        background: #ffffff;
-        border: 1px solid #f0f0f0;
-        box-shadow: 0 8px 18px rgba(0,0,0,0.06);
-        padding: 10px 10px 6px 10px;
-      }
-
-      td {
-        border: none;
-        border-bottom: 1px solid #f5f5f5;
-        padding: 4px 0;
-        display: flex;
-        gap: 6px;
-        font-size: 13px;
-      }
-      td:last-child {
-        border-bottom: none;
-        padding-bottom: 2px;
-      }
-
-      td::before {
-        content: attr(data-label);
-        flex: 0 0 80px;
-        font-weight: 600;
-        color: #777;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<title>인천대학교 가족회사 검색</title>
+<style>
+body { font-family: Arial; background:#f5f5f5; padding:20px; }
+.container { max-width:600px; margin:auto; }
+.card { background:white; padding:20px; border-radius:12px; margin-top:20px; box-shadow:0 4px 12px rgba(0,0,0,0.08); }
+.keyword { color:#007BFF; font-weight:bold; }
+input { width:100%; padding:12px; border:1px solid #ccc; border-radius:8px; margin-top:8px; }
+button { width:100%; padding:14px; background:#007BFF; color:white; border:none; border-radius:8px; margin-top:12px; font-size:18px; }
+</style>
 </head>
 <body>
-  <div class="container">
+<div class="container">
+<h2>인천대학교 가족회사 검색</h2>
 
-    <!-- 로고 + 제목 -->
-    <div class="logo-title">
-      <!-- 기존 JPG 로고 사용 -->
-      <img src="inu_symbol.jpg" alt="INU 로고">
-      <h1>인천대학교 가족회사 검색</h1>
-    </div>
+<label>기업명</label>
+<input id="companyInput" placeholder="기업명 입력">
 
-    <!-- 검색 영역 -->
-    <div class="search-box">
-      <label for="companyInput">기업명</label>
-      <input id="companyInput" type="text" placeholder="기업명 입력">
+<label>대표자명</label>
+<input id="ceoInput" placeholder="대표자명 입력">
 
-      <label for="ceoInput">대표자명</label>
-      <input id="ceoInput" type="text" placeholder="대표자명 입력">
+<button id="searchBtn">검색</button>
 
-      <div class="hint">※ 기업명 또는 대표자명만 입력해도 검색됩니다.</div>
+<div id="resultArea"></div>
+</div>
 
-      <button id="searchBtn">검색</button>
-    </div>
+<script src="familyCompanies.js"></script>
 
-    <!-- 결과 영역 -->
-    <div class="result-area" id="resultArea">
-      <div class="no-result">검색 조건을 입력 후 [검색] 버튼을 눌러주세요.</div>
-    </div>
-  </div>
+<script>
+// 옵션 C 하이라이트 함수
+function highlight(text, keyword) {
+    if (!keyword) return text;
+    const lower = text.toLowerCase();
+    const key = keyword.toLowerCase();
 
-  <!-- 데이터 JS -->
-  <script src="familyCompanies.js"></script>
-
-  <script>
-    const companyInput = document.getElementById("companyInput");
-    const ceoInput = document.getElementById("ceoInput");
-    const searchBtn = document.getElementById("searchBtn");
-    const resultArea = document.getElementById("resultArea");
-
-    function renderNoResult(msg) {
-      resultArea.innerHTML = `<div class="no-result">${msg}</div>`;
+    // 검색어 길이 1 이하 → 전체 강조
+    if (keyword.length <= 1) {
+        return `<span class="keyword">${text}</span>`;
     }
 
-    // 텍스트에서 검색어 부분만 <span class="keyword">로 감싸기
-    function highlightMatch(text, keyword) {
-      if (!text) return "";
-      if (!keyword) return text;
+    const idx = lower.indexOf(key);
+    if (idx === -1) return text;
 
-      const lowerText = text.toLowerCase();
-      const lowerKey = keyword.toLowerCase();
-      const index = lowerText.indexOf(lowerKey);
+    const before = text.substring(0, idx);
+    const match = text.substring(idx, idx + keyword.length);
+    const after = text.substring(idx + keyword.length);
+    return `${before}<span class="keyword">${match}</span>${after}`;
+}
 
-      if (index === -1) {
-        return text;
-      }
+document.getElementById("searchBtn").onclick = function () {
+    const companyKey = document.getElementById("companyInput").value.trim();
+    const ceoKey = document.getElementById("ceoInput").value.trim();
 
-      const before = text.substring(0, index);
-      const match = text.substring(index, index + keyword.length);
-      const after = text.substring(index + keyword.length);
+    const results = window.familyCompanies.filter(row => {
+        const c1 = companyKey && row.기업명.includes(companyKey);
+        const c2 = ceoKey && row.대표자.includes(ceoKey);
+        return c1 || c2;
+    });
 
-      return `${before}<span class="keyword">${match}</span>${after}`;
-    }
+    const area = document.getElementById("resultArea");
+    area.innerHTML = "";
 
-    // rows: 검색 결과 배열
-    function renderTable(rows, options = {}) {
-      const companyKeywordRaw = options.companyKeywordRaw || "";
-      const ceoKeywordRaw = options.ceoKeywordRaw || "";
-
-      let html = `
-        <table>
-          <thead>
-            <tr>
-              <th>인증서 번호</th>
-              <th>기업명</th>
-              <th>대표자</th>
-              <th>멤버십</th>
-              <th>주요제품</th>
-              <th>업종</th>
-              <th>사업자등록번호</th>
-              <th>추천교수</th>
-              <th>주소</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-
-      rows.forEach(row => {
-        const 기업명 = row.기업명 || "";
-        const 대표자 = row.대표자 || "";
-
-        const companyHtml = highlightMatch(기업명, companyKeywordRaw);
-        const ceoHtml = highlightMatch(대표자, ceoKeywordRaw);
-
-        html += `
-          <tr>
-            <td data-label="인증서 번호">${row.인증서번호 || ""}</td>
-            <td data-label="기업명">${companyHtml}</td>
-            <td data-label="대표자">${ceoHtml}</td>
-            <td data-label="멤버십">${row.멤버십 || ""}</td>
-            <td data-label="주요제품">${row.주요제품 || ""}</td>
-            <td data-label="업종">${row.업종 || ""}</td>
-            <td data-label="사업자등록번호">${row.사업자등록번호 || ""}</td>
-            <td data-label="추천교수">${row.추천교수 || ""}</td>
-            <td data-label="주소">${row.주소 || ""}</td>
-          </tr>
-        `;
-      });
-
-      html += `
-          </tbody>
-        </table>
-      `;
-
-      resultArea.innerHTML = html;
-    }
-
-    function search() {
-      const companyRaw = companyInput.value.trim();
-      const ceoRaw = ceoInput.value.trim();
-      const companyKeyword = companyRaw.toLowerCase();
-      const ceoKeyword = ceoRaw.toLowerCase();
-
-      if (!companyKeyword && !ceoKeyword) {
-        alert("기업명 또는 대표자명 중 하나 이상을 입력해주세요.");
+    if (results.length === 0) {
+        area.innerHTML = "<p>검색 결과가 없습니다.</p>";
         return;
-      }
-
-      const data = Array.isArray(window.familyCompanies) ? window.familyCompanies : [];
-
-      const filtered = data.filter(item => {
-        const nameMatch = companyKeyword
-          ? (item.기업명 || "").toLowerCase().includes(companyKeyword)
-          : true;
-
-        const ceoMatch = ceoKeyword
-          ? (item.대표자 || "").toLowerCase().includes(ceoKeyword)
-          : true;
-
-        return nameMatch && ceoMatch;
-      });
-
-      if (filtered.length === 0) {
-        renderNoResult("검색 결과가 없습니다.");
-      } else {
-        renderTable(filtered, {
-          companyKeywordRaw: companyRaw,
-          ceoKeywordRaw: ceoRaw
-        });
-      }
     }
 
-    searchBtn.addEventListener("click", search);
-    companyInput.addEventListener("keydown", e => { if (e.key === "Enter") search(); });
-    ceoInput.addEventListener("keydown", e => { if (e.key === "Enter") search(); });
-  </script>
+    results.forEach(row => {
+        let comp = row.기업명;
+        let ceo = row.대표자;
+
+        if (companyKey) comp = highlight(comp, companyKey);
+        if (ceoKey) ceo = highlight(ceo, ceoKey);
+
+        area.innerHTML += `
+        <div class="card">
+            <p><b>인증서 번호</b> ${row.인증서번호}</p>
+            <p><b>기업명</b> ${comp}</p>
+            <p><b>대표자</b> ${ceo}</p>
+            <p><b>멤버십</b> ${row.멤버십}</p>
+            <p><b>주요제품</b> ${row.주요제품}</p>
+            <p><b>업종</b> ${row.업종}</p>
+            <p><b>사업자등록번호</b> ${row.사업자등록번호}</p>
+            <p><b>추천교수</b> ${row.추천교수}</p>
+            <p><b>주소</b> ${row.주소}</p>
+        </div>
+        `;
+    });
+};
+</script>
+
 </body>
 </html>
