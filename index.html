@@ -21,18 +21,18 @@
     .logo-title {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       gap: 10px;
       margin-bottom: 16px;
       padding-top: 10px;
     }
     .logo-title img {
-      height: 40px;       /* 심볼 크기 */
+      height: 32px;
       width: auto;
       display: block;
     }
     .logo-title h1 {
-      font-size: 22px;
+      font-size: 20px;
       margin: 0;
       font-weight: 700;
     }
@@ -70,7 +70,7 @@
       cursor: pointer;
     }
     button:active {
-      opacity: 0.8;
+      opacity: 0.85;
     }
     .result-area {
       background: #ffffff;
@@ -78,6 +78,8 @@
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
+
+    /* 기본: PC/태블릿에서는 표 형태 */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -103,12 +105,65 @@
       color: #777;
       margin-top: 4px;
     }
+
+    /* ⬇⬇ 휴대폰(가로폭 768px 이하)에서 카드 형태로 바꾸기 */
+    @media (max-width: 768px) {
+      .container {
+        padding: 12px;
+      }
+      .logo-title {
+        justify-content: center;
+      }
+      .logo-title h1 {
+        font-size: 18px;
+        text-align: center;
+      }
+      .search-box {
+        padding: 14px;
+      }
+
+      table {
+        border: 0;
+      }
+      thead {
+        display: none;  /* 헤더 숨김 */
+      }
+      table, tbody, tr, td {
+        display: block;
+        width: 100%;
+      }
+      tr {
+        margin-bottom: 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      }
+      td {
+        border: 0;
+        border-bottom: 1px solid #f0f0f0;
+        padding: 6px 10px;
+        font-size: 13px;
+        display: flex;
+        align-items: flex-start;
+        gap: 6px;
+      }
+      td:last-child {
+        border-bottom: 0;
+      }
+      td::before {
+        content: attr(data-label);
+        flex: 0 0 80px;
+        font-weight: 600;
+        color: #555;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
 
-    <!-- ⬇⬇ INU 로고 + 제목 -->
+    <!-- INU 로고 + 제목 -->
     <div class="logo-title">
       <img src="inu_symbol.jpg" alt="INU 로고">
       <h1>인천대학교 가족회사 검색</h1>
@@ -131,6 +186,7 @@
     </div>
   </div>
 
+  <!-- 데이터 파일 -->
   <script src="familyCompanies.js"></script>
 
   <script>
@@ -165,15 +221,15 @@
       rows.forEach(row => {
         html += `
           <tr>
-            <td>${row.인증서번호}</td>
-            <td>${row.기업명}</td>
-            <td>${row.대표자}</td>
-            <td>${row.멤버십}</td>
-            <td>${row.주요제품}</td>
-            <td>${row.업종}</td>
-            <td>${row.사업자등록번호}</td>
-            <td>${row.추천교수}</td>
-            <td>${row.주소}</td>
+            <td data-label="인증서 번호">${row.인증서번호}</td>
+            <td data-label="기업명">${row.기업명}</td>
+            <td data-label="대표자">${row.대표자}</td>
+            <td data-label="멤버십">${row.멤버십}</td>
+            <td data-label="주요제품">${row.주요제품}</td>
+            <td data-label="업종">${row.업종}</td>
+            <td data-label="사업자등록번호">${row.사업자등록번호}</td>
+            <td data-label="추천교수">${row.추천교수}</td>
+            <td data-label="주소">${row.주소}</td>
           </tr>
         `;
       });
