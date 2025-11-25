@@ -109,12 +109,12 @@
       font-size: 14px;
     }
 
-    /* 검색어 하이라이트 (굵기 없음) */
-    .keyword {
+    /* 🔵 기업명 / 대표자 하이라이트 (PC+모바일 공통) */
+    .highlight {
       color: #0056d6;
     }
 
-    /* 모바일 화면에서 카드형으로 변환 */
+    /* 모바일: 카드형으로 변환 */
     @media (max-width: 768px) {
       .container {
         padding: 12px;
@@ -165,11 +165,13 @@
 <body>
   <div class="container">
 
+    <!-- 로고 + 제목 -->
     <div class="logo-title">
       <img src="inu_symbol.jpg" alt="INU 로고">
       <h1>인천대학교 가족회사 검색</h1>
     </div>
 
+    <!-- 검색 영역 -->
     <div class="search-box">
       <label for="companyInput">기업명</label>
       <input id="companyInput" type="text" placeholder="기업명 입력">
@@ -182,11 +184,13 @@
       <button id="searchBtn">검색</button>
     </div>
 
+    <!-- 결과 영역 -->
     <div class="result-area" id="resultArea">
       <div class="no-result">검색 조건을 입력 후 [검색] 버튼을 눌러주세요.</div>
     </div>
   </div>
 
+  <!-- 데이터 JS -->
   <script src="familyCompanies.js"></script>
 
   <script>
@@ -199,28 +203,11 @@
       resultArea.innerHTML = `<div class="no-result">${msg}</div>`;
     }
 
-    /* 검색어 부분만 파란색으로 감싸기 */
-    function highlightMatch(text, keyword) {
-      if (!text) return "";
-      if (!keyword) return text;
-
-      const lowerText = text.toLowerCase();
-      const lowerKey = keyword.toLowerCase();
-      const index = lowerText.indexOf(lowerKey);
-
-      if (index === -1) return text;
-
-      const before = text.substring(0, index);
-      const match = text.substring(index, index + keyword.length);
-      const after = text.substring(index + keyword.length);
-
-      return `${before}<span class="keyword">${match}</span>${after}`;
-    }
-
-    /* 표 or 카드 렌더링 */
+    // 결과 테이블/카드 렌더링
+    // options: { highlightCompany: boolean, highlightCeo: boolean }
     function renderTable(rows, options = {}) {
-      const companyKey = options.companyKeywordRaw || "";
-      const ceoKey = options.ceoKeywordRaw || "";
+      const highlightCompany = !!options.highlightCompany;
+      const highlightCeo = !!options.highlightCeo;
 
       let html = `
         <table>
@@ -241,11 +228,14 @@
       `;
 
       rows.forEach(row => {
+        const companyClass = highlightCompany ? "highlight" : "";
+        const ceoClass = highlightCeo ? "highlight" : "";
+
         html += `
           <tr>
             <td data-label="인증서 번호">${row.인증서번호 || ""}</td>
-            <td data-label="기업명">${highlightMatch(row.기업명, companyKey)}</td>
-            <td data-label="대표자">${highlightMatch(row.대표자, ceoKey)}</td>
+            <td data-label="기업명" class="${companyClass}">${row.기업명 || ""}</td>
+            <td data-label="대표자" class="${ceoClass}">${row.대표자 || ""}</td>
             <td data-label="멤버십">${row.멤버십 || ""}</td>
             <td data-label="주요제품">${row.주요제품 || ""}</td>
             <td data-label="업종">${row.업종 || ""}</td>
@@ -260,7 +250,7 @@
       resultArea.innerHTML = html;
     }
 
-    /* 검색 실행 */
+    // 검색 실행
     function search() {
       const companyRaw = companyInput.value.trim();
       const ceoRaw = ceoInput.value.trim();
@@ -291,12 +281,13 @@
         renderNoResult("검색 결과가 없습니다.");
       } else {
         renderTable(filtered, {
-          companyKeywordRaw: companyRaw,
-          ceoKeywordRaw: ceoRaw
+          highlightCompany: !!companyRaw,
+          highlightCeo: !!ceoRaw
         });
       }
     }
 
+    // 버튼 클릭 + 엔터키로 검색 실행
     searchBtn.addEventListener("click", search);
     companyInput.addEventListener("keydown", e => { if (e.key === "Enter") search(); });
     ceoInput.addEventListener("keydown", e => { if (e.key === "Enter") search(); });
