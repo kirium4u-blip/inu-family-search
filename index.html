@@ -85,7 +85,7 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
-    /* PC 기본: 테이블 형태 */
+    /* PC 기본 테이블 */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -109,13 +109,12 @@
       font-size: 14px;
     }
 
-    /* 검색어 하이라이트용 */
+    /* 검색어 하이라이트 (굵기 없음) */
     .keyword {
       color: #0056d6;
-      font-weight: 600;
     }
 
-    /* ===== 모바일(좁은 화면)에서 카드형으로 전환 ===== */
+    /* 모바일 화면에서 카드형으로 변환 */
     @media (max-width: 768px) {
       .container {
         padding: 12px;
@@ -125,7 +124,7 @@
         border: 0;
       }
       thead {
-        display: none;   /* 헤더 숨김 */
+        display: none;
       }
       table, tbody, tr, td {
         display: block;
@@ -166,14 +165,11 @@
 <body>
   <div class="container">
 
-    <!-- 로고 + 제목 -->
     <div class="logo-title">
-      <!-- 기존 JPG 로고 사용 -->
       <img src="inu_symbol.jpg" alt="INU 로고">
       <h1>인천대학교 가족회사 검색</h1>
     </div>
 
-    <!-- 검색 영역 -->
     <div class="search-box">
       <label for="companyInput">기업명</label>
       <input id="companyInput" type="text" placeholder="기업명 입력">
@@ -186,13 +182,11 @@
       <button id="searchBtn">검색</button>
     </div>
 
-    <!-- 결과 영역 -->
     <div class="result-area" id="resultArea">
       <div class="no-result">검색 조건을 입력 후 [검색] 버튼을 눌러주세요.</div>
     </div>
   </div>
 
-  <!-- 데이터 JS -->
   <script src="familyCompanies.js"></script>
 
   <script>
@@ -205,7 +199,7 @@
       resultArea.innerHTML = `<div class="no-result">${msg}</div>`;
     }
 
-    // 텍스트에서 검색어 부분만 <span class="keyword">로 감싸기
+    /* 검색어 부분만 파란색으로 감싸기 */
     function highlightMatch(text, keyword) {
       if (!text) return "";
       if (!keyword) return text;
@@ -214,9 +208,7 @@
       const lowerKey = keyword.toLowerCase();
       const index = lowerText.indexOf(lowerKey);
 
-      if (index === -1) {
-        return text;
-      }
+      if (index === -1) return text;
 
       const before = text.substring(0, index);
       const match = text.substring(index, index + keyword.length);
@@ -225,10 +217,10 @@
       return `${before}<span class="keyword">${match}</span>${after}`;
     }
 
-    // rows: 검색 결과 배열
+    /* 표 or 카드 렌더링 */
     function renderTable(rows, options = {}) {
-      const companyKeywordRaw = options.companyKeywordRaw || "";
-      const ceoKeywordRaw = options.ceoKeywordRaw || "";
+      const companyKey = options.companyKeywordRaw || "";
+      const ceoKey = options.ceoKeywordRaw || "";
 
       let html = `
         <table>
@@ -249,17 +241,11 @@
       `;
 
       rows.forEach(row => {
-        const 기업명 = row.기업명 || "";
-        const 대표자 = row.대표자 || "";
-
-        const companyHtml = highlightMatch(기업명, companyKeywordRaw);
-        const ceoHtml = highlightMatch(대표자, ceoKeywordRaw);
-
         html += `
           <tr>
             <td data-label="인증서 번호">${row.인증서번호 || ""}</td>
-            <td data-label="기업명">${companyHtml}</td>
-            <td data-label="대표자">${ceoHtml}</td>
+            <td data-label="기업명">${highlightMatch(row.기업명, companyKey)}</td>
+            <td data-label="대표자">${highlightMatch(row.대표자, ceoKey)}</td>
             <td data-label="멤버십">${row.멤버십 || ""}</td>
             <td data-label="주요제품">${row.주요제품 || ""}</td>
             <td data-label="업종">${row.업종 || ""}</td>
@@ -270,22 +256,20 @@
         `;
       });
 
-      html += `
-          </tbody>
-        </table>
-      `;
-
+      html += `</tbody></table>`;
       resultArea.innerHTML = html;
     }
 
+    /* 검색 실행 */
     function search() {
       const companyRaw = companyInput.value.trim();
       const ceoRaw = ceoInput.value.trim();
+
       const companyKeyword = companyRaw.toLowerCase();
       const ceoKeyword = ceoRaw.toLowerCase();
 
       if (!companyKeyword && !ceoKeyword) {
-        alert("기업명 또는 대표자명 중 하나 이상을 입력해주세요.");
+        alert("기업명 또는 대표자명을 입력해주세요.");
         return;
       }
 
