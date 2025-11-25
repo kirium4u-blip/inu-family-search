@@ -109,12 +109,12 @@
       font-size: 14px;
     }
 
-    /* 🔵 기업명 / 대표자 하이라이트 (PC+모바일 공통) */
+    /* 기업명 / 대표자 하이라이트 (PC+모바일 공통) */
     .highlight {
       color: #0056d6;
     }
 
-    /* 모바일: 카드형으로 변환 */
+    /* 모바일: 카드형 + 노란 코너 */
     @media (max-width: 768px) {
       .container {
         padding: 12px;
@@ -138,6 +138,8 @@
         border: 1px solid #f0f0f0;
         box-shadow: 0 8px 18px rgba(0,0,0,0.06);
         padding: 10px 10px 6px 10px;
+        position: relative;
+        overflow: hidden;
       }
 
       td {
@@ -159,12 +161,37 @@
         font-weight: 600;
         color: #777;
       }
+
+      /* 오른쪽 위 코너 */
+      tr::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 28px;
+        height: 28px;
+        border-right: 6px solid #F2A900;
+        border-top: 6px solid #F2A900;
+        border-radius: 0 8px 0 0;
+      }
+
+      /* 왼쪽 아래 코너 */
+      tr::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 28px;
+        height: 28px;
+        border-left: 6px solid #F2A900;
+        border-bottom: 6px solid #F2A900;
+        border-radius: 0 0 0 8px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-
     <!-- 로고 + 제목 -->
     <div class="logo-title">
       <img src="inu_symbol.jpg" alt="INU 로고">
