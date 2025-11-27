@@ -74,7 +74,7 @@
       font-size: 16px;
       cursor: pointer;
       font-weight: 600;
-      color: white; /* 기본 글자색 흰색 */
+      color: white;
     }
     button:active {
       opacity: 0.9;
@@ -85,12 +85,9 @@
       background: #0066cc;
     }
     
-    /* 초기화 버튼 (모바일 카드 코너와 동일한 노란색) */
+    /* 초기화 버튼 (노란색) */
     .btn-reset {
       background: #F2A900; 
-      /* 노란색 배경에는 흰 글씨보다 검은 글씨가 더 잘 보일 수 있습니다. 
-         만약 글자가 잘 안 보이면 color: white; 를 color: #333; 으로 바꿔주세요. 
-         지금은 통일성을 위해 흰색(기본)으로 두었습니다. */
     }
 
     .hint {
@@ -106,7 +103,7 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
-    /* PC 기본 테이블 */
+    /* 테이블 스타일 */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -133,6 +130,50 @@
     .highlight {
       color: #0056d6;
       font-weight: bold;
+    }
+
+    /* 지도 보기 링크 스타일 */
+    .map-link {
+      color: #0066cc;
+      cursor: pointer;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+    .map-link:hover {
+      color: #004499;
+    }
+
+    /* 지도 모달(팝업) 스타일 */
+    .modal-overlay {
+      display: none; /* 평소에는 숨김 */
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .modal-header {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+    }
+    .modal-title { font-size: 18px; font-weight: bold; color: #333; }
+    .close-btn {
+      background: none; border: none; font-size: 24px; cursor: pointer; color: #999; padding: 0; width: auto;
+    }
+    /* 지도 영역 */
+    #map {
+      width: 100%;
+      height: 350px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
     }
 
     /* 모바일: 카드형 */
@@ -178,6 +219,8 @@
       }
     }
   </style>
+  
+  <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=86350fd755f0e6cea6c2894b33765bba&libraries=services"></script>
 </head>
 <body>
   <div class="container">
@@ -209,6 +252,16 @@
     </div>
   </div>
 
+  <div id="mapModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div id="modalTitle" class="modal-title">지도 보기</div>
+        <button class="close-btn" onclick="closeMap()">×</button>
+      </div>
+      <div id="map"></div>
+    </div>
+  </div>
+
   <script src="familyCompanies.js"></script>
 
   <script>
@@ -218,24 +271,25 @@
     const searchBtn = document.getElementById("searchBtn");
     const resetBtn = document.getElementById("resetBtn");
     const resultArea = document.getElementById("resultArea");
+    
+    const mapModal = document.getElementById("mapModal");
+    const modalTitle = document.getElementById("modalTitle");
+    let mapContainer = document.getElementById('map');
+    let map = null; 
+    let geocoder = null;
 
-    // 초기화: 등급별 카운트 계산 및 옵션 생성
+    // 1. 등급별 카운트 및 옵션 생성
     function initMembershipOptions() {
       const data = Array.isArray(window.familyCompanies) ? window.familyCompanies : [];
-      
       const counts = { '플래티넘': 0, '골드': 0, '실버': 0, '베이직': 0 };
 
       data.forEach(item => {
         const grade = item.멤버십 ? item.멤버십.trim() : '';
-        if (counts[grade] !== undefined) {
-          counts[grade]++;
-        }
+        if (counts[grade] !== undefined) counts[grade]++;
       });
 
-      const totalCount = data.length;
-
       membershipSelect.innerHTML = `
-        <option value="">전체 (${totalCount})</option>
+        <option value="">전체 (${data.length})</option>
         <option value="플래티넘">플래티넘 (${counts['플래티넘']})</option>
         <option value="골드">골드 (${counts['골드']})</option>
         <option value="실버">실버 (${counts['실버']})</option>
@@ -272,6 +326,10 @@
       rows.forEach(row => {
         const companyClass = highlightCompany ? "highlight" : "";
         const ceoClass = highlightCeo ? "highlight" : "";
+        // 주소 클릭 시 지도 함수 호출
+        const addressDisplay = row.주소 
+          ? `<span class="map-link" onclick="openMap('${row.주소}', '${row.기업명}')">📍 ${row.주소}</span>` 
+          : "";
 
         html += `
           <tr>
@@ -283,7 +341,7 @@
             <td data-label="업종">${row.업종 || ""}</td>
             <td data-label="사업자등록번호">${row.사업자등록번호 || ""}</td>
             <td data-label="추천교수">${row.추천교수 || ""}</td>
-            <td data-label="주소">${row.주소 || ""}</td>
+            <td data-label="주소">${addressDisplay}</td>
           </tr>
         `;
       });
@@ -311,27 +369,78 @@
         const nameMatch = companyKeyword ? (item.기업명 || "").toLowerCase().includes(companyKeyword) : true;
         const ceoMatch = ceoKeyword ? (item.대표자 || "").toLowerCase().includes(ceoKeyword) : true;
         const membershipMatch = membershipVal ? (item.멤버십 === membershipVal) : true;
-
         return nameMatch && ceoMatch && membershipMatch;
       });
 
       if (filtered.length === 0) {
         renderNoResult("검색 결과가 없습니다.");
       } else {
-        renderTable(filtered, {
-          highlightCompany: !!companyRaw,
-          highlightCeo: !!ceoRaw
-        });
+        renderTable(filtered, { highlightCompany: !!companyRaw, highlightCeo: !!ceoRaw });
       }
     }
 
-    // 초기화 함수
     function resetSearch() {
       companyInput.value = "";
       ceoInput.value = "";
       membershipSelect.value = "";
       resultArea.innerHTML = `<div class="no-result">검색 조건을 입력 후 [검색] 버튼을 눌러주세요.</div>`;
       companyInput.focus();
+    }
+
+    // --- 지도 기능 ---
+    function openMap(address, companyName) {
+      mapModal.style.display = 'flex';
+      modalTitle.innerText = companyName + " 위치";
+
+      if (!window.kakao || !window.kakao.maps) {
+        alert("지도 API 로딩 실패. 키 설정이나 도메인 등록을 확인하세요.");
+        return;
+      }
+
+      if (!map) {
+        const mapOption = {
+          center: new kakao.maps.LatLng(33.450701, 126.570667), 
+          level: 3
+        };
+        map = new kakao.maps.Map(mapContainer, mapOption);
+        geocoder = new kakao.maps.services.Geocoder();
+      } else {
+        map.relayout();
+      }
+
+      // 주소로 좌표를 검색합니다
+      geocoder.addressSearch(address, function(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+          // 마커를 표시합니다
+          const marker = new kakao.maps.Marker({
+            map: map,
+            position: coords
+          });
+
+          // 인포윈도우로 장소명 표시
+          const infowindow = new kakao.maps.InfoWindow({
+            content: `<div style="width:150px;text-align:center;padding:6px 0;font-size:13px;">${companyName}</div>`
+          });
+          infowindow.open(map, marker);
+
+          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+          map.setCenter(coords);
+        } else {
+          alert('주소 검색 실패: ' + address);
+        }
+      });
+    }
+
+    function closeMap() {
+      mapModal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      if (event.target == mapModal) {
+        closeMap();
+      }
     }
 
     initMembershipOptions();
