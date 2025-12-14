@@ -309,8 +309,7 @@
       </div>
     </div>
 
-    <div class="result-area" id="resultArea">
-      <div class="no-result">검색 조건을 입력 후 [검색] 버튼을 눌러주세요.
+    
 
 <div id="statusBar" class="status-bar" aria-label="실시간 정보">
   <div class="status-row">
@@ -318,7 +317,9 @@
     <span class="status-sep">·</span>
     <span id="nowTime">🕒 --:--:--</span>
   </div>
-  <div class="status-row">
+
+<div class="result-area" id="resultArea">
+      <div class="no-result">검색 조건을 입력 후 [검색] 버튼을 눌러주세요.<div class="status-row">
     <span id="nowWeather">🌤️ 인천대 송도캠퍼스 날씨 불러오는 중…</span>
   </div>
 </div>
@@ -372,11 +373,11 @@ if (inuLogo) {
 
 // --- 실시간 날짜/시간 표시 ---
 function startDateTime() {
-  const dateEl = document.getElementById('nowDate');
-  const timeEl = document.getElementById('nowTime');
-  if (!dateEl || !timeEl) return;
-
   const tick = () => {
+    const dateEl = document.getElementById('nowDate');
+    const timeEl = document.getElementById('nowTime');
+    if (!dateEl || !timeEl) return;
+
     const d = new Date();
     const y = d.getFullYear();
     const m = String(d.getMonth() + 1).padStart(2, '0');
@@ -388,6 +389,16 @@ function startDateTime() {
     const ss = String(d.getSeconds()).padStart(2, '0');
 
     dateEl.textContent = `📅 ${y}.${m}.${da} (${weekday})`;
+    timeEl.textContent = `🕒 ${hh}:${mm}:${ss}`;
+  };
+
+  // 중복 interval 방지: 기존 핸들 있으면 제거
+  if (window.__inuClockInterval) clearInterval(window.__inuClockInterval);
+  tick();
+  window.__inuClockInterval = setInterval(tick, 1000);
+}
+
+.${m}.${da} (${weekday})`;
     timeEl.textContent = `🕒 ${hh}:${mm}:${ss}`;
   };
 
@@ -543,7 +554,10 @@ async function loadSongdoWeather() {
       membershipSelect.value = "";
       resultArea.innerHTML = `<div class="no-result">검색 조건을 입력 후 [검색] 버튼을 눌러주세요.</div>`;
       companyInput.focus();
-      triggerLogoSpin();
+      
+      startDateTime();
+      loadSongdoWeather();
+triggerLogoSpin();
 
     }
 
