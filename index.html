@@ -35,7 +35,39 @@
       margin: 0;
     }
 
-    /* 검색 박스 */
+    
+
+    /* INU 로고 – 기본(정지) + 은은한 그림자 */
+    .inu-globe {
+      height: 32px;
+      width: auto;
+      transform-origin: center center;
+      box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.18),
+        inset 0 0 5px rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      will-change: transform;
+    }
+
+    /* 이벤트(첫 접속/초기화) 시 1회 빠른 회전 */
+    .inu-globe.spin-once {
+      animation: globeSpinOnce 0.9s ease-in-out 1;
+    }
+
+    @media (max-width: 768px) {
+      .inu-globe {
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+      }
+      .inu-globe.spin-once {
+        animation-duration: 1.05s;
+      }
+    }
+
+    @keyframes globeSpinOnce {
+      from { transform: rotateY(0deg); }
+      to   { transform: rotateY(360deg); }
+    }
+/* 검색 박스 */
     .search-box {
       background: #ffffff;
       padding: 16px;
@@ -225,7 +257,7 @@
 <body>
   <div class="container">
     <div class="logo-title">
-      <img src="inu_symbol.jpg" alt="INU 로고">
+      <img src="inu_symbol.jpg" alt="INU 로고" class="inu-globe">
       <h1>인천대학교 가족회사 검색</h1>
     </div>
 
@@ -278,7 +310,27 @@
     let map = null; 
     let geocoder = null;
 
-    // 1. 등급별 카운트 및 옵션 생성
+    
+
+    // --- INU 로고: 첫 접속/초기화 시 1회 빠른 회전 ---
+    const inuLogo = document.querySelector('.inu-globe');
+
+    function triggerLogoSpin() {
+      if (!inuLogo) return;
+      // 같은 클래스 재적용을 위해 제거 후 다시 추가
+      inuLogo.classList.remove('spin-once');
+      // 강제로 리플로우(애니메이션 재시작)
+      void inuLogo.offsetWidth;
+      inuLogo.classList.add('spin-once');
+    }
+
+    if (inuLogo) {
+      inuLogo.addEventListener('animationend', () => {
+        inuLogo.classList.remove('spin-once');
+      });
+    }
+
+// 1. 등급별 카운트 및 옵션 생성
     function initMembershipOptions() {
       const data = Array.isArray(window.familyCompanies) ? window.familyCompanies : [];
       const counts = { '플래티넘': 0, '골드': 0, '실버': 0, '베이직': 0 };
@@ -385,50 +437,61 @@
       membershipSelect.value = "";
       resultArea.innerHTML = `<div class="no-result">검색 조건을 입력 후 [검색] 버튼을 눌러주세요.</div>`;
       companyInput.focus();
+      triggerLogoSpin();
+
     }
 
-    // --- 지도 기능 ---
+    // --- 지도 기능 (수정됨) ---
     function openMap(address, companyName) {
-      mapModal.style.display = 'flex';
-      modalTitle.innerText = companyName + " 위치";
+      // 1. 주소 정제: 괄호와 콤마 뒷부분 제거 (검색 정확도 향상)
+      const cleanAddr = address.split('(')[0].split(',')[0].trim();
 
+      // 2. 카카오 API 확인
       if (!window.kakao || !window.kakao.maps) {
         alert("지도 API 로딩 실패. 키 설정이나 도메인 등록을 확인하세요.");
         return;
       }
 
-      if (!map) {
-        const mapOption = {
-          center: new kakao.maps.LatLng(33.450701, 126.570667), 
-          level: 3
-        };
-        map = new kakao.maps.Map(mapContainer, mapOption);
+      // 3. 지오코더 생성 (아직 지도 창 안 엶)
+      if (!geocoder) {
         geocoder = new kakao.maps.services.Geocoder();
-      } else {
-        map.relayout();
       }
 
-      // 주소로 좌표를 검색합니다
-      geocoder.addressSearch(address, function(result, status) {
+      // 4. 주소 검색 먼저 시도
+      geocoder.addressSearch(cleanAddr, function(result, status) {
         if (status === kakao.maps.services.Status.OK) {
+          // 5. 성공하면 그때 지도 창을 엽니다!
+          mapModal.style.display = 'flex';
+          modalTitle.innerText = companyName + " 위치";
+
+          if (!map) {
+            map = new kakao.maps.Map(mapContainer, {
+              center: new kakao.maps.LatLng(33.450701, 126.570667), // 초기값
+              level: 3
+            });
+          } else {
+            map.relayout();
+          }
+
           const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-          // 마커를 표시합니다
+          // 마커 생성 및 인포윈도우
           const marker = new kakao.maps.Marker({
             map: map,
             position: coords
           });
 
-          // 인포윈도우로 장소명 표시
           const infowindow = new kakao.maps.InfoWindow({
             content: `<div style="width:150px;text-align:center;padding:6px 0;font-size:13px;">${companyName}</div>`
           });
           infowindow.open(map, marker);
 
-          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+          // 지도 중심 이동
           map.setCenter(coords);
+
         } else {
-          alert('주소 검색 실패: ' + address);
+          // 6. 실패하면 경고창만 띄우고 끝 (지도 창 안 뜸)
+          alert('주소 위치를 찾을 수 없습니다.\n(' + cleanAddr + ')');
         }
       });
     }
@@ -445,7 +508,10 @@
 
     initMembershipOptions();
 
-    searchBtn.addEventListener("click", search);
+    
+
+    triggerLogoSpin();
+searchBtn.addEventListener("click", search);
     resetBtn.addEventListener("click", resetSearch);
     companyInput.addEventListener("keydown", e => { if (e.key === "Enter") search(); });
     ceoInput.addEventListener("keydown", e => { if (e.key === "Enter") search(); });
