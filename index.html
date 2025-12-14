@@ -35,39 +35,7 @@
       margin: 0;
     }
 
-    
-
-    /* INU 로고 – 기본(정지) + 은은한 그림자 */
-    .inu-globe {
-      height: 32px;
-      width: auto;
-      transform-origin: center center;
-      box-shadow:
-        0 2px 6px rgba(0, 0, 0, 0.18),
-        inset 0 0 5px rgba(255, 255, 255, 0.2);
-      border-radius: 4px;
-      will-change: transform;
-    }
-
-    /* 이벤트(첫 접속/초기화) 시 1회 빠른 회전 */
-    .inu-globe.spin-once {
-      animation: globeSpinOnce 0.9s ease-in-out 1;
-    }
-
-    @media (max-width: 768px) {
-      .inu-globe {
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-      }
-      .inu-globe.spin-once {
-        animation-duration: 1.05s;
-      }
-    }
-
-    @keyframes globeSpinOnce {
-      from { transform: rotateY(0deg); }
-      to   { transform: rotateY(360deg); }
-    }
-/* 검색 박스 */
+    /* 검색 박스 */
     .search-box {
       background: #ffffff;
       padding: 16px;
@@ -250,7 +218,69 @@
         border-left: 6px solid #F2A900; border-bottom: 6px solid #F2A900; border-radius: 0 0 0 8px;
       }
     }
-  </style>
+
+/* INU 로고 – 기본(정지) + 은은한 그림자 */
+.inu-globe {
+  height: 32px;
+  width: auto;
+  transform-origin: center center;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.18),
+    inset 0 0 5px rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  will-change: transform;
+}
+
+/* 이벤트(첫 접속/초기화) 시 1회 빠른 회전 */
+.inu-globe.spin-once {
+  animation: globeSpinOnce 0.9s ease-in-out 1;
+}
+
+@media (max-width: 768px) {
+  .inu-globe { box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15); }
+  .inu-globe.spin-once { animation-duration: 1.05s; }
+}
+
+@keyframes globeSpinOnce {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
+
+/* 실시간 정보 바 (날짜/시간/송도 날씨) */
+.status-bar {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f3f6ff;
+  border: 1px solid #d9e4ff;
+  color: #1f2a44;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap; /* PC: 한 줄 */
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.status-sep { opacity: 0.6; }
+
+/* 모바일: 2줄 */
+@media (max-width: 768px) {
+  .status-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+}
+</style>
   
   <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=86350fd755f0e6cea6c2894b33765bba&libraries=services"></script>
 </head>
@@ -280,7 +310,19 @@
     </div>
 
     <div class="result-area" id="resultArea">
-      <div class="no-result">검색 조건을 입력 후 [검색] 버튼을 눌러주세요.</div>
+      <div class="no-result">검색 조건을 입력 후 [검색] 버튼을 눌러주세요.
+
+<div id="statusBar" class="status-bar" aria-label="실시간 정보">
+  <div class="status-row">
+    <span id="nowDate">📅 --</span>
+    <span class="status-sep">·</span>
+    <span id="nowTime">🕒 --:--:--</span>
+  </div>
+  <div class="status-row">
+    <span id="nowWeather">🌤️ 인천대 송도캠퍼스 날씨 불러오는 중…</span>
+  </div>
+</div>
+</div>
     </div>
   </div>
 
@@ -312,23 +354,87 @@
 
     
 
-    // --- INU 로고: 첫 접속/초기화 시 1회 빠른 회전 ---
-    const inuLogo = document.querySelector('.inu-globe');
+// --- INU 로고: 첫 접속/초기화 시 1회 빠른 회전 ---
+const inuLogo = document.querySelector('.inu-globe');
 
-    function triggerLogoSpin() {
-      if (!inuLogo) return;
-      // 같은 클래스 재적용을 위해 제거 후 다시 추가
-      inuLogo.classList.remove('spin-once');
-      // 강제로 리플로우(애니메이션 재시작)
-      void inuLogo.offsetWidth;
-      inuLogo.classList.add('spin-once');
-    }
+function triggerLogoSpin() {
+  if (!inuLogo) return;
+  inuLogo.classList.remove('spin-once');
+  void inuLogo.offsetWidth; // reflow to restart animation
+  inuLogo.classList.add('spin-once');
+}
 
-    if (inuLogo) {
-      inuLogo.addEventListener('animationend', () => {
-        inuLogo.classList.remove('spin-once');
-      });
-    }
+if (inuLogo) {
+  inuLogo.addEventListener('animationend', () => {
+    inuLogo.classList.remove('spin-once');
+  });
+}
+
+// --- 실시간 날짜/시간 표시 ---
+function startDateTime() {
+  const dateEl = document.getElementById('nowDate');
+  const timeEl = document.getElementById('nowTime');
+  if (!dateEl || !timeEl) return;
+
+  const tick = () => {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const da = String(d.getDate()).padStart(2, '0');
+    const weekday = ['일','월','화','수','목','금','토'][d.getDay()];
+
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    const ss = String(d.getSeconds()).padStart(2, '0');
+
+    dateEl.textContent = `📅 ${y}.${m}.${da} (${weekday})`;
+    timeEl.textContent = `🕒 ${hh}:${mm}:${ss}`;
+  };
+
+  tick();
+  setInterval(tick, 1000);
+}
+
+// --- 날씨 코드 → 한글 ---
+function weatherDesc(code) {
+  const m = {
+    0:"맑음",1:"대체로 맑음",2:"구름 조금",3:"흐림",
+    45:"안개",48:"안개",
+    51:"이슬비",53:"이슬비",55:"이슬비",
+    61:"비",63:"비",65:"폭우",
+    71:"눈",73:"눈",75:"폭설",
+    80:"소나기",81:"소나기",82:"호우",
+    95:"뇌우"
+  };
+  return m[code] || "날씨";
+}
+
+// --- 인천대 송도캠퍼스 고정 날씨 (Open-Meteo, 무료/키 없음) ---
+async function loadSongdoWeather() {
+  const el = document.getElementById('nowWeather');
+  if (!el) return;
+
+  try {
+    const lat = 37.3750;
+    const lon = 126.6328;
+
+    const url =
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
+      `&current=temperature_2m,weather_code,wind_speed_10m&timezone=Asia/Seoul`;
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    const c = data.current;
+    const temp = Math.round(c.temperature_2m);
+    const wind = Math.round(c.wind_speed_10m);
+    const desc = weatherDesc(c.weather_code);
+
+    el.textContent = `🌤️ 인천대 송도캠퍼스 · ${desc} · ${temp}℃ · 바람 ${wind}m/s`;
+  } catch (e) {
+    el.textContent = "🌤️ 송도캠퍼스 날씨 불러오기 실패";
+  }
+}
 
 // 1. 등급별 카운트 및 옵션 생성
     function initMembershipOptions() {
@@ -509,7 +615,8 @@
     initMembershipOptions();
 
     
-
+    startDateTime();
+    loadSongdoWeather();
     triggerLogoSpin();
 searchBtn.addEventListener("click", search);
     resetBtn.addEventListener("click", resetSearch);
