@@ -177,7 +177,7 @@
     }
 
     /* 모바일: 카드형 */
-    @media (max-width: 768px) {
+    @media (max-width: 768px), (max-width: 1024px) and (orientation: landscape) {
       .container { padding: 12px; }
       table { border: 0; }
       thead { display: none; }
@@ -259,7 +259,7 @@
   will-change: transform;
 }
 .inu-globe.spin-once{ animation: globeSpinOnce 0.9s ease-in-out 1; }
-@media (max-width: 768px){
+@media (max-width: 768px), (max-width: 1024px) and (orientation: landscape) {
   .inu-globe{ box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
   .inu-globe.spin-once{ animation-duration: 1.05s; }
 }
@@ -295,7 +295,7 @@
   min-width: 0;
 }
 .status-right span{ margin-right: 10px; }
-@media (max-width: 768px){
+@media (max-width: 768px), (max-width: 1024px) and (orientation: landscape) {
   .status-bar{
     flex-direction: column;
     align-items: flex-start;
@@ -370,7 +370,7 @@
     .activity-box .act-list{ padding-left:18px; }
     .activity-box .act-list li{ margin:6px 0; font-size:14px; line-height:1.55; }
 
-    @media (max-width: 768px){
+    @media (max-width: 768px), (max-width: 1024px) and (orientation: landscape) {
       /* ✅ 활동 상세는 기본 숨김(버튼 클릭 시 JS가 display를 켬) */
       .activity-row td{ padding:0 !important; border-bottom:none !important; }
       .activity-row td::before{ display:none !important; content:none !important; }
