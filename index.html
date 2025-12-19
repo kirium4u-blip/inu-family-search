@@ -217,6 +217,8 @@
         content: ""; position: absolute; bottom: 0; left: 0; width: 28px; height: 28px;
         border-left: 6px solid #F2A900; border-bottom: 6px solid #F2A900; border-radius: 0 0 0 8px;
   
+      }
+
       /* ✅ 활동 상세 행(.activity-row)은 회사 카드 노란 코너 장식 제외 */
       tr.activity-row::before,
       tr.activity-row::after{
@@ -231,6 +233,11 @@
         background: transparent !important;
         margin-bottom: 0 !important;
       }
+    
+      /* ✅ 활동 상세: flex 영향 제거 + 박스 폭 100% (모바일/가로모드) */
+      tr.activity-row td{ display:block !important; }
+      .activity-box{ width:100% !important; box-sizing:border-box !important; }
+
     }
 
       /* ✅ 활동 상세 행(.activity-row)은 회사 카드 노란 코너 장식 제외 */
@@ -328,6 +335,7 @@
       padding:12px 14px;
       border-top:1px solid #e6ecef;
       border-left:4px solid #2563eb;
+      border-right:4px solid #2563eb;
       color:#111827;
       font-size:14px;
       line-height:1.65;
@@ -359,6 +367,7 @@
       color:#ffffff;
       border-top:none;
       border-left:6px solid #2563eb;
+      border-right:6px solid #2563eb;
       border-radius:10px;
       margin:10px;
       box-shadow:0 6px 14px rgba(0,0,0,0.12);
@@ -393,8 +402,24 @@
       background:#ffffff !important;
       color:#111827 !important;
       border-left:6px solid #2563eb !important;
+      border-right:6px solid #2563eb !important;
       box-shadow:0 6px 14px rgba(0,0,0,0.10) !important;
+      position:relative !important;
+      overflow:hidden !important;
     }
+    /* ✅ 활동 상세 카드 양쪽 파란 라인(확실하게): pseudo-element */
+    .activity-box::before,
+    .activity-box::after{
+      content:"";
+      position:absolute;
+      top:0; bottom:0;
+      width:6px;
+      background:#2563eb;
+      pointer-events:none;
+    }
+    .activity-box::before{ left:0; border-radius:10px 0 0 10px; }
+    .activity-box::after{ right:0; border-radius:0 10px 10px 0; }
+
     .activity-box .act-empty{ color:#374151 !important; }
     .activity-box .act-result{ color:#374151 !important; }
     .activity-box .act-date, 
@@ -750,7 +775,7 @@ html += `
       const row = document.getElementById(`activityRow-${idx}`);
       if (!row) return;
       const isOpen = row.style.display !== "none";
-      row.style.display = isOpen ? "none" : (window.matchMedia && window.matchMedia("(max-width: 768px)").matches ? "block" : "table-row");
+      row.style.display = isOpen ? "none" : (window.matchMedia && window.matchMedia("(max-width: 768px), (max-width: 1024px) and (orientation: landscape)").matches ? "block" : "table-row");
       if (!btn.disabled) {
         btn.textContent = btn.textContent.replace(isOpen ? "▾" : "▸", isOpen ? "▸" : "▾");
       }
