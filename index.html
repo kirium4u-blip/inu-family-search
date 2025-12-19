@@ -341,13 +341,37 @@
     .activity-box .act-list li{ margin:6px 0; font-size:14px; line-height:1.55; }
 
     @media (max-width: 768px){
-      .activity-row, .activity-row td{ display:block !important; width:100% !important; }
+      /* ✅ 활동 상세는 기본 숨김(버튼 클릭 시 JS가 display를 켬) */
       .activity-row td{ padding:0 !important; border-bottom:none !important; }
       .activity-row td::before{ display:none !important; content:none !important; }
       .activity-box{ margin:10px 0 6px 0; }
     }
 
-  </style>
+    /* ===== FIX: 산학협력 활동 가독성 (모바일 포함) ===== */
+    .activity-toggle{
+      color:#111827 !important;            /* 버튼 글씨 검정 */
+      background:#eef2f7 !important;       /* 연한 배경 */
+      border:1px solid #cfd8e3 !important;
+    }
+    .activity-toggle:disabled{
+      color:#6b7280 !important;
+      background:#f3f4f6 !important;
+      border-color:#e5e7eb !important;
+    }
+    /* 활동 상세 박스: 흰 배경 + 검정 글씨 */
+    .activity-box{
+      background:#ffffff !important;
+      color:#111827 !important;
+      border-left:6px solid #F2A900 !important;
+      box-shadow:0 6px 14px rgba(0,0,0,0.10) !important;
+    }
+    .activity-box .act-empty{ color:#374151 !important; }
+    .activity-box .act-result{ color:#374151 !important; }
+    .activity-box .act-date, 
+    .activity-box .act-type{ color:#111827 !important; }
+    .activity-box .act-title{ color:#111827 !important; font-weight:700 !important; }
+
+</style>
   
   <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=86350fd755f0e6cea6c2894b33765bba&libraries=services"></script>
 </head>
@@ -696,7 +720,7 @@ html += `
       const row = document.getElementById(`activityRow-${idx}`);
       if (!row) return;
       const isOpen = row.style.display !== "none";
-      row.style.display = isOpen ? "none" : "table-row";
+      row.style.display = isOpen ? "none" : (window.matchMedia && window.matchMedia("(max-width: 768px)").matches ? "block" : "table-row");
       if (!btn.disabled) {
         btn.textContent = btn.textContent.replace(isOpen ? "▾" : "▸", isOpen ? "▸" : "▾");
       }
