@@ -219,36 +219,28 @@
       }
     }
 
-/* INU 로고 – 기본(정지) + 은은한 그림자 */
-.inu-globe {
+/* ===== INU 로고 효과 ===== */
+.inu-globe{
   height: 32px;
   width: auto;
   transform-origin: center center;
-  box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.18),
-    inset 0 0 5px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18), inset 0 0 5px rgba(255,255,255,0.2);
   border-radius: 4px;
   will-change: transform;
 }
-
-/* 이벤트(첫 접속/초기화) 시 1회 빠른 회전 */
-.inu-globe.spin-once {
-  animation: globeSpinOnce 0.9s ease-in-out 1;
+.inu-globe.spin-once{ animation: globeSpinOnce 0.9s ease-in-out 1; }
+@media (max-width: 768px){
+  .inu-globe{ box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
+  .inu-globe.spin-once{ animation-duration: 1.05s; }
+}
+@keyframes globeSpinOnce{
+  from{ transform: rotateY(0deg); }
+  to{ transform: rotateY(360deg); }
 }
 
-@media (max-width: 768px) {
-  .inu-globe { box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15); }
-  .inu-globe.spin-once { animation-duration: 1.05s; }
-}
-
-@keyframes globeSpinOnce {
-  from { transform: rotateY(0deg); }
-  to   { transform: rotateY(360deg); }
-}
-
-/* 실시간 정보 바 (날짜/시간/송도 날씨) */
-.status-bar {
-  margin-top: 10px;
+/* ===== 송도캠퍼스 날짜/시간/날씨 바 (PC 1줄 / 모바일 2줄) ===== */
+.status-bar{
+  margin-top: 12px;
   padding: 10px 12px;
   border-radius: 10px;
   background: #f3f6ff;
@@ -256,31 +248,106 @@
   color: #1f2a44;
   font-size: 14px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
   flex-wrap: nowrap; /* PC: 한 줄 */
 }
-
-.status-row {
+.status-left, .status-right{
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   white-space: nowrap;
 }
-
-.status-sep { opacity: 0.6; }
-
-/* 모바일: 2줄 */
-@media (max-width: 768px) {
-  .status-bar {
+.status-right{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.status-right span{ margin-right: 10px; }
+@media (max-width: 768px){
+  .status-bar{
     flex-direction: column;
     align-items: flex-start;
     gap: 6px;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* 모바일: 2줄 */
   }
+  .status-right{ white-space: normal; }
+  .status-right span{ margin-right: 0; }
 }
-</style>
+
+    /* 산학협력 활동 토글 */
+    .activity-toggle{
+      background:#f4f6f8;
+      border:1px solid #d6dde3;
+      border-radius:10px;
+      padding:6px 10px;
+      font-size:13px;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .activity-toggle:disabled{
+      opacity:.5;
+      cursor:default;
+    }
+    .activity-row td{
+      background:#f9fafb;
+      padding:0;
+    }
+    .activity-box{
+      padding:12px 14px;
+      border-top:1px solid #e6ecef;
+      border-left:4px solid #2563eb;
+      color:#111827;
+      font-size:14px;
+      line-height:1.65;
+    }
+    .act-list{
+      margin:0;
+      padding-left:20px;
+    }
+    .act-list li{
+      margin:4px 0;
+    }
+    .act-empty{
+      color:#6b7280;
+      font-size:14px;
+      padding:2px 0;
+    }
+    .act-date{ font-weight:800; }
+    .act-type{ font-weight:800; }
+    .act-title{ font-weight:600; }
+    .act-result{ color:#374151; }
+
+
+    /* 활동 상세(가독성 강화) */
+    .activity-row td{
+      background:#ffffff !important;
+    }
+    .activity-box{
+      background:#0f172a; /* dark slate */
+      color:#ffffff;
+      border-top:none;
+      border-left:6px solid #F2A900;
+      border-radius:10px;
+      margin:10px;
+      box-shadow:0 6px 14px rgba(0,0,0,0.12);
+    }
+    .activity-box .act-empty{ color:#e5e7eb; }
+    .activity-box .act-result{ color:#e5e7eb; }
+    .activity-box .act-date, .activity-box .act-type{ color:#fff; }
+    .activity-box .act-title{ color:#fff; font-weight:700; }
+    .activity-box .act-list{ padding-left:18px; }
+    .activity-box .act-list li{ margin:6px 0; font-size:14px; line-height:1.55; }
+
+    @media (max-width: 768px){
+      .activity-row, .activity-row td{ display:block !important; width:100% !important; }
+      .activity-row td{ padding:0 !important; border-bottom:none !important; }
+      .activity-row td::before{ display:none !important; content:none !important; }
+      .activity-box{ margin:10px 0 6px 0; }
+    }
+
+  </style>
   
   <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=86350fd755f0e6cea6c2894b33765bba&libraries=services"></script>
 </head>
@@ -304,25 +371,24 @@
       <div class="hint">※ 기업명, 대표자명, 등급 중 하나만 입력해도 검색됩니다.</div>
 
       <div class="btn-group">
-        <button id="searchBtn" class="btn-search">검색</button>
-        <button id="resetBtn" class="btn-reset">초기화</button>
+        <button id="searchBtn" class="btn-search" type="button">검색</button>
+        <button id="resetBtn" class="btn-reset" type="button">초기화</button>
       </div>
     </div>
 
-    <div class="result-area" id="resultArea">
-      <div class="no-result">검색 조건을 입력 후 [검색] 버튼을 눌러주세요.
-
-<div id="statusBar" class="status-bar" aria-label="실시간 정보">
-  <div class="status-row">
+    <div id="statusBar" class="status-bar" aria-label="송도캠퍼스 실시간 정보" style="display:none;">
+  <div class="status-left">
     <span id="nowDate">📅 --</span>
-    <span class="status-sep">·</span>
+    <span style="opacity:.6;">·</span>
     <span id="nowTime">🕒 --:--:--</span>
   </div>
-  <div class="status-row">
-    <span id="nowWeather">🌤️ 인천대 송도캠퍼스 날씨 불러오는 중…</span>
+  <div class="status-right">
+    <span id="nowWeather">🌤️ 날씨 불러오는 중…</span>
   </div>
 </div>
-</div>
+
+<div class="result-area" id="resultArea">
+      <div class="no-result">검색 조건을 입력 후 [검색] 버튼을 눌러주세요.</div>
     </div>
   </div>
 
@@ -337,6 +403,7 @@
   </div>
 
   <script src="familyCompanies.js"></script>
+  <script src="companyActivities.js"></script>
 
   <script>
     const companyInput = document.getElementById("companyInput");
@@ -352,91 +419,7 @@
     let map = null; 
     let geocoder = null;
 
-    
-
-// --- INU 로고: 첫 접속/초기화 시 1회 빠른 회전 ---
-const inuLogo = document.querySelector('.inu-globe');
-
-function triggerLogoSpin() {
-  if (!inuLogo) return;
-  inuLogo.classList.remove('spin-once');
-  void inuLogo.offsetWidth; // reflow to restart animation
-  inuLogo.classList.add('spin-once');
-}
-
-if (inuLogo) {
-  inuLogo.addEventListener('animationend', () => {
-    inuLogo.classList.remove('spin-once');
-  });
-}
-
-// --- 실시간 날짜/시간 표시 ---
-function startDateTime() {
-  const dateEl = document.getElementById('nowDate');
-  const timeEl = document.getElementById('nowTime');
-  if (!dateEl || !timeEl) return;
-
-  const tick = () => {
-    const d = new Date();
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const da = String(d.getDate()).padStart(2, '0');
-    const weekday = ['일','월','화','수','목','금','토'][d.getDay()];
-
-    const hh = String(d.getHours()).padStart(2, '0');
-    const mm = String(d.getMinutes()).padStart(2, '0');
-    const ss = String(d.getSeconds()).padStart(2, '0');
-
-    dateEl.textContent = `📅 ${y}.${m}.${da} (${weekday})`;
-    timeEl.textContent = `🕒 ${hh}:${mm}:${ss}`;
-  };
-
-  tick();
-  setInterval(tick, 1000);
-}
-
-// --- 날씨 코드 → 한글 ---
-function weatherDesc(code) {
-  const m = {
-    0:"맑음",1:"대체로 맑음",2:"구름 조금",3:"흐림",
-    45:"안개",48:"안개",
-    51:"이슬비",53:"이슬비",55:"이슬비",
-    61:"비",63:"비",65:"폭우",
-    71:"눈",73:"눈",75:"폭설",
-    80:"소나기",81:"소나기",82:"호우",
-    95:"뇌우"
-  };
-  return m[code] || "날씨";
-}
-
-// --- 인천대 송도캠퍼스 고정 날씨 (Open-Meteo, 무료/키 없음) ---
-async function loadSongdoWeather() {
-  const el = document.getElementById('nowWeather');
-  if (!el) return;
-
-  try {
-    const lat = 37.3750;
-    const lon = 126.6328;
-
-    const url =
-      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
-      `&current=temperature_2m,weather_code,wind_speed_10m&timezone=Asia/Seoul`;
-
-    const res = await fetch(url);
-    const data = await res.json();
-
-    const c = data.current;
-    const temp = Math.round(c.temperature_2m);
-    const wind = Math.round(c.wind_speed_10m);
-    const desc = weatherDesc(c.weather_code);
-
-    el.textContent = `🌤️ 인천대 송도캠퍼스 · ${desc} · ${temp}℃ · 바람 ${wind}m/s`;
-  } catch (e) {
-    el.textContent = "🌤️ 송도캠퍼스 날씨 불러오기 실패";
-  }
-}
-
-// 1. 등급별 카운트 및 옵션 생성
+    // 1. 등급별 카운트 및 옵션 생성
     function initMembershipOptions() {
       const data = Array.isArray(window.familyCompanies) ? window.familyCompanies : [];
       const counts = { '플래티넘': 0, '골드': 0, '실버': 0, '베이직': 0 };
@@ -459,7 +442,78 @@ async function loadSongdoWeather() {
       resultArea.innerHTML = `<div class="no-result">${msg}</div>`;
     }
 
-    function renderTable(rows, options = {}) {
+    
+
+    // --- 산학협력 활동 매칭 (1차: 사업자등록번호, 2차: 인증서번호, 3차: 기업명) ---
+    function normKey(v){ return String(v || "").trim(); }
+    function normBizNo(v){ return String(v || "").replace(/\D/g, ""); }
+    function normName(v){
+      return String(v || "")
+        .replace(/\s+/g, "")
+        .replace(/㈜|\(주\)|주식회사/g, "")
+        .toLowerCase();
+    }
+    function escapeHtml(s){
+      return String(s || "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#39;");
+    }
+    function buildCompanyLookup(){
+      const byCert = {};
+      const byName = {};
+      const list = window.familyCompanies || [];
+      list.forEach(c=>{
+        const biz = normBizNo(c.사업자등록번호);
+        if (!biz) return;
+        const cert = normKey(c.인증서번호);
+        if (cert && !byCert[cert]) byCert[cert] = biz;
+        const name = normName(c.기업명);
+        if (name){
+          if (!byName[name]) byName[name] = [];
+          byName[name].push(biz);
+        }
+      });
+      return { byCert, byName };
+    }
+    const __companyLookup = buildCompanyLookup();
+
+    function getActivitiesForCompany(row){
+      const actsByBiz = window.companyActivitiesByBizNo || {};
+      // 1) 사업자등록번호
+      let biz = normBizNo(row.사업자등록번호);
+      // 2) 인증서번호
+      if (!biz){
+        const cert = normKey(row.인증서번호);
+        biz = __companyLookup.byCert[cert] || "";
+      }
+      // 3) 기업명 (후보가 1개일 때만)
+      if (!biz){
+        const name = normName(row.기업명);
+        const candidates = __companyLookup.byName[name] || [];
+        if (candidates.length === 1) biz = candidates[0];
+      }
+      const acts = biz ? (actsByBiz[biz] || []) : [];
+      return { biz, acts };
+    }
+
+    function renderActivityList(acts){
+      if (!acts || acts.length === 0) {
+        return `<div class="act-empty">활동 이력이 없습니다.</div>`;
+      }
+      const sorted = [...acts].sort((a,b)=> String(b.date||"").localeCompare(String(a.date||"")));
+      const items = sorted.map(a => {
+        const date = escapeHtml(a.date || "");
+        const type = escapeHtml(a.type || "기타");
+        const title = escapeHtml(a.title || "");
+        const result = a.result ? ` · ${escapeHtml(a.result)}` : "";
+        return `<li><span class="act-date">${date}</span> · <span class="act-type">${type}</span> · <span class="act-title">${title}</span><span class="act-result">${result}</span></li>`;
+      }).join("");
+      return `<ul class="act-list">${items}</ul>`;
+    }
+function renderTable(rows, options = {}) {
       const highlightCompany = !!options.highlightCompany;
       const highlightCeo = !!options.highlightCeo;
 
@@ -476,12 +530,13 @@ async function loadSongdoWeather() {
               <th>사업자등록번호</th>
               <th>추천교수</th>
               <th>주소</th>
+              <th>산학협력 활동</th>
             </tr>
           </thead>
           <tbody>
       `;
 
-      rows.forEach(row => {
+      rows.forEach((row, rowIndex) => {
         const companyClass = highlightCompany ? "highlight" : "";
         const ceoClass = highlightCeo ? "highlight" : "";
         // 주소 클릭 시 지도 함수 호출
@@ -489,7 +544,21 @@ async function loadSongdoWeather() {
           ? `<span class="map-link" onclick="openMap('${row.주소}', '${row.기업명}')">📍 ${row.주소}</span>` 
           : "";
 
-        html += `
+        
+        const { biz: __bizKey, acts: __acts } = getActivitiesForCompany(row);
+        const __actCount = __acts.length;
+        const __idx = rowIndex;
+        const __btnDisabled = __actCount === 0 ? 'disabled' : '';
+        const __btnLabel = __actCount === 0 ? `활동(0)` : `활동(${__actCount}) 보기 ▾`;
+        const activityCell = `<button class="activity-toggle" type="button" data-act-idx="${__idx}" ${__btnDisabled}>${__btnLabel}</button>`;
+        const activityDetailRow = `<tr class="activity-row" id="activityRow-${__idx}" style="display:none;">
+            <td colspan="10">
+              <div class="activity-box">
+                ${renderActivityList(__acts)}
+              </div>
+            </td>
+          </tr>`;
+html += `
           <tr>
             <td data-label="인증서 번호">${row.인증서번호 || ""}</td>
             <td data-label="기업명" class="${companyClass}">${row.기업명 || ""}</td>
@@ -500,7 +569,9 @@ async function loadSongdoWeather() {
             <td data-label="사업자등록번호">${row.사업자등록번호 || ""}</td>
             <td data-label="추천교수">${row.추천교수 || ""}</td>
             <td data-label="주소">${addressDisplay}</td>
+            <td data-label="산학협력 활동">${activityCell}</td>
           </tr>
+          ${activityDetailRow}
         `;
       });
 
@@ -509,6 +580,7 @@ async function loadSongdoWeather() {
     }
 
     function search() {
+      if (window.__hideStatus) window.__hideStatus();
       const companyRaw = companyInput.value.trim();
       const ceoRaw = ceoInput.value.trim();
       const membershipVal = membershipSelect.value;
@@ -538,13 +610,12 @@ async function loadSongdoWeather() {
     }
 
     function resetSearch() {
+      if (window.__showStatus) window.__showStatus();
       companyInput.value = "";
       ceoInput.value = "";
       membershipSelect.value = "";
       resultArea.innerHTML = `<div class="no-result">검색 조건을 입력 후 [검색] 버튼을 눌러주세요.</div>`;
       companyInput.focus();
-      triggerLogoSpin();
-
     }
 
     // --- 지도 기능 (수정됨) ---
@@ -614,14 +685,137 @@ async function loadSongdoWeather() {
 
     initMembershipOptions();
 
-    
-    startDateTime();
-    loadSongdoWeather();
-    triggerLogoSpin();
-searchBtn.addEventListener("click", search);
+    searchBtn.addEventListener("click", search);
     resetBtn.addEventListener("click", resetSearch);
+
+    // 활동( n ) 보기 토글
+    resultArea.addEventListener("click", (e) => {
+      const btn = e.target.closest && e.target.closest(".activity-toggle");
+      if (!btn) return;
+      const idx = btn.getAttribute("data-act-idx");
+      const row = document.getElementById(`activityRow-${idx}`);
+      if (!row) return;
+      const isOpen = row.style.display !== "none";
+      row.style.display = isOpen ? "none" : "table-row";
+      if (!btn.disabled) {
+        btn.textContent = btn.textContent.replace(isOpen ? "▾" : "▸", isOpen ? "▸" : "▾");
+      }
+    });
     companyInput.addEventListener("keydown", e => { if (e.key === "Enter") search(); });
     ceoInput.addEventListener("keydown", e => { if (e.key === "Enter") search(); });
   </script>
+<script>
+(() => {
+  const LAT = 37.3750;
+  const LON = 126.6328;
+
+  const $ = (id) => document.getElementById(id);
+
+  function triggerLogoSpin(){
+    const logo = document.querySelector('.inu-globe');
+    if (!logo) return;
+    logo.classList.remove('spin-once');
+    void logo.offsetWidth;
+    logo.classList.add('spin-once');
+    logo.addEventListener('animationend', () => logo.classList.remove('spin-once'), { once:true });
+  }
+
+  function startClock(){
+    const tick = () => {
+      const dateEl = $('nowDate');
+      const timeEl = $('nowTime');
+      if (!dateEl || !timeEl) return;
+
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,'0');
+      const da = String(d.getDate()).padStart(2,'0');
+      const weekday = ['일','월','화','수','목','금','토'][d.getDay()];
+
+      const hh = String(d.getHours()).padStart(2,'0');
+      const mm = String(d.getMinutes()).padStart(2,'0');
+      const ss = String(d.getSeconds()).padStart(2,'0');
+
+      dateEl.textContent = `📅 ${y}.${m}.${da} (${weekday})`;
+      timeEl.textContent = `🕒 ${hh}:${mm}:${ss}`;
+    };
+
+    if (window.__inuStatusClock) clearInterval(window.__inuStatusClock);
+    tick();
+    window.__inuStatusClock = setInterval(tick, 1000);
+  }
+
+  function stopClock(){
+    if (window.__inuStatusClock){
+      clearInterval(window.__inuStatusClock);
+      window.__inuStatusClock = null;
+    }
+  }
+
+  function weatherDesc(code){
+    const map = {
+      0:"맑음",1:"대체로 맑음",2:"구름 조금",3:"흐림",
+      45:"안개",48:"안개",
+      51:"이슬비",53:"이슬비",55:"이슬비",
+      61:"비",63:"비",65:"폭우",
+      71:"눈",73:"눈",75:"폭설",
+      80:"소나기",81:"소나기",82:"호우",
+      95:"뇌우"
+    };
+    return map[code] || "날씨";
+  }
+
+  async function loadWeatherOnce(){
+    const el = $('nowWeather');
+    if (!el) return;
+    try{
+      const url =
+        `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}` +
+        `&current=temperature_2m,weather_code,wind_speed_10m&timezone=Asia/Seoul`;
+      const res = await fetch(url, { cache: "no-store" });
+      const data = await res.json();
+      const c = data.current;
+      const temp = Math.round(c.temperature_2m);
+      const wind = Math.round(c.wind_speed_10m);
+      const desc = weatherDesc(c.weather_code);
+      el.textContent = `🌤️ 인천대 송도캠퍼스 · ${desc} · ${temp}℃ · 바람 ${wind}m/s`;
+    }catch(e){
+      el.textContent = "🌤️ 송도캠퍼스 날씨 불러오기 실패";
+    }
+  }
+
+  function showStatus(){
+    const bar = $('statusBar');
+    if (!bar) return;
+    bar.style.display = 'flex';
+    startClock();
+    loadWeatherOnce();
+  }
+
+  function hideStatus(){
+    const bar = $('statusBar');
+    if (!bar) return;
+    bar.style.display = 'none';
+    stopClock();
+  }
+
+  window.__showStatus = showStatus;
+  window.__hideStatus = hideStatus;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    showStatus();
+    triggerLogoSpin();
+
+    const searchBtn = $('searchBtn');
+    if (searchBtn) searchBtn.addEventListener('click', hideStatus);
+
+    const resetBtn = $('resetBtn');
+    if (resetBtn) resetBtn.addEventListener('click', () => {
+      showStatus();
+      triggerLogoSpin();
+    });
+  });
+})();
+</script>
 </body>
 </html>
