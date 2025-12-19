@@ -216,6 +216,36 @@
       tr::after {
         content: ""; position: absolute; bottom: 0; left: 0; width: 28px; height: 28px;
         border-left: 6px solid #F2A900; border-bottom: 6px solid #F2A900; border-radius: 0 0 0 8px;
+  
+      /* ✅ 활동 상세 행(.activity-row)은 회사 카드 노란 코너 장식 제외 */
+      tr.activity-row::before,
+      tr.activity-row::after{
+        content: none !important;
+        display: none !important;
+        border: 0 !important;
+      }
+      tr.activity-row{
+        padding: 0 !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        margin-bottom: 0 !important;
+      }
+    }
+
+      /* ✅ 활동 상세 행(.activity-row)은 회사 카드 노란 코너 장식 제외 */
+      tr.activity-row::before,
+      tr.activity-row::after{
+        content: none !important;
+        display: none !important;
+        border: 0 !important;
+      }
+      tr.activity-row{
+        padding: 0 !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        margin-bottom: 0 !important;
       }
     }
 
@@ -328,7 +358,7 @@
       background:#0f172a; /* dark slate */
       color:#ffffff;
       border-top:none;
-      border-left:6px solid #F2A900;
+      border-left:6px solid #2563eb;
       border-radius:10px;
       margin:10px;
       box-shadow:0 6px 14px rgba(0,0,0,0.12);
@@ -362,7 +392,7 @@
     .activity-box{
       background:#ffffff !important;
       color:#111827 !important;
-      border-left:6px solid #F2A900 !important;
+      border-left:6px solid #2563eb !important;
       box-shadow:0 6px 14px rgba(0,0,0,0.10) !important;
     }
     .activity-box .act-empty{ color:#374151 !important; }
