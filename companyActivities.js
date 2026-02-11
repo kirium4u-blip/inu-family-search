@@ -1,7 +1,7 @@
 // Auto-generated companyActivities.js (산학협력활동)
 window.companyActivitiesMeta = {
-  "generatedAt": "2026-02-09 13:10:46",
-  "excelFile": "가족회사 산학협력활동_250209.xlsx",
+  "generatedAt": "2026-02-11 10:03:46",
+  "excelFile": "붙임2. 가족회사 산학협력활동_250209.xlsx",
   "columnsDetected": {
     "bizNo": "사업자등록번호",
     "certNo": "인증서 번호",
@@ -13,7 +13,7 @@ window.companyActivitiesMeta = {
     "dept": "담당부서",
     "owner": "담당자",
     "evidenceUrl": "증빙자료",
-    "note": null
+    "note": "기타"
   },
   "matchedCompanies": 92,
   "totalActivities": 138
@@ -88,18 +88,6 @@ window.companyActivitiesByBizNo = {
       }
     },
     {
-      "date": "2025-10-28",
-      "type": "애로컨설팅",
-      "title": "인천대학교 애로컨설팅 지원사업",
-      "result": "애로 컨설팅 지원",
-      "dept": "산학협력팀",
-      "owner": "서영주",
-      "evidenceUrl": "애로 컨설팅 지원",
-      "source": {
-        "excelRow": 32
-      }
-    },
-    {
       "date": "2025-10-17",
       "type": "간담회",
       "title": "제2차 유료 가족회사 간담회",
@@ -112,7 +100,19 @@ window.companyActivitiesByBizNo = {
       }
     },
     {
-      "date": "2025-01-20",
+      "date": "2025-10-28",
+      "type": "애로컨설팅",
+      "title": "인천대학교 애로컨설팅 지원사업",
+      "result": "애로 컨설팅 지원",
+      "dept": "산학협력팀",
+      "owner": "서영주",
+      "evidenceUrl": "애로 컨설팅 지원",
+      "source": {
+        "excelRow": 32
+      }
+    },
+    {
+      "date": "2026-01-20",
       "type": "재직자교육",
       "title": "가족회사 임직원 대상 생성형 AI 실무 재직자 교육",
       "result": "AI 실무 교육을 통한 업무 생산성 향상",
@@ -182,6 +182,17 @@ window.companyActivitiesByBizNo = {
   ],
   "1148656092": [
     {
+      "date": "2025-01-02",
+      "type": "기술이전",
+      "title": "기술이전",
+      "result": "협약서",
+      "dept": "기술사업화팀",
+      "owner": "김지현",
+      "source": {
+        "excelRow": 85
+      }
+    },
+    {
       "date": "2025-06-03",
       "type": "애로컨설팅",
       "title": "인천대학교 애로컨설팅 지원사업",
@@ -191,17 +202,6 @@ window.companyActivitiesByBizNo = {
       "evidenceUrl": "애로 컨설팅 지원",
       "source": {
         "excelRow": 10
-      }
-    },
-    {
-      "date": "2025-01-02",
-      "type": "기술이전",
-      "title": "기술이전",
-      "result": "협약서",
-      "dept": "기술사업화팀",
-      "owner": "김지현",
-      "source": {
-        "excelRow": 85
       }
     }
   ],
@@ -312,18 +312,6 @@ window.companyActivitiesByBizNo = {
       }
     },
     {
-      "date": "2025-10-17",
-      "type": "간담회",
-      "title": "제2차 유료 가족회사 간담회",
-      "result": "유료 가족회사 간 상호 협력체계 마련",
-      "dept": "산학협력팀",
-      "owner": "서영주",
-      "evidenceUrl": "https://www.incheonnews.com/news/articleView.html?idxno=430314",
-      "source": {
-        "excelRow": 51
-      }
-    },
-    {
       "date": "2025-07-11",
       "type": "간담회",
       "title": "제1차 유료 가족회사 간담회",
@@ -333,6 +321,18 @@ window.companyActivitiesByBizNo = {
       "evidenceUrl": "https://www.incheonilbo.com/news/articleView.html?idxno=1295992",
       "source": {
         "excelRow": 74
+      }
+    },
+    {
+      "date": "2025-10-17",
+      "type": "간담회",
+      "title": "제2차 유료 가족회사 간담회",
+      "result": "유료 가족회사 간 상호 협력체계 마련",
+      "dept": "산학협력팀",
+      "owner": "서영주",
+      "evidenceUrl": "https://www.incheonnews.com/news/articleView.html?idxno=430314",
+      "source": {
+        "excelRow": 51
       }
     },
     {
@@ -486,18 +486,6 @@ window.companyActivitiesByBizNo = {
       }
     },
     {
-      "date": "2025-12-01",
-      "type": "애로컨설팅",
-      "title": "인천대학교 애로컨설팅 지원사업",
-      "result": "애로 컨설팅 지원",
-      "dept": "산학협력팀",
-      "owner": "서영주",
-      "evidenceUrl": "애로 컨설팅 지원",
-      "source": {
-        "excelRow": 37
-      }
-    },
-    {
       "date": "2025-10-17",
       "type": "간담회",
       "title": "제2차 유료 가족회사 간담회",
@@ -507,6 +495,18 @@ window.companyActivitiesByBizNo = {
       "evidenceUrl": "https://www.incheonnews.com/news/articleView.html?idxno=430314",
       "source": {
         "excelRow": 49
+      }
+    },
+    {
+      "date": "2025-12-01",
+      "type": "애로컨설팅",
+      "title": "인천대학교 애로컨설팅 지원사업",
+      "result": "애로 컨설팅 지원",
+      "dept": "산학협력팀",
+      "owner": "서영주",
+      "evidenceUrl": "애로 컨설팅 지원",
+      "source": {
+        "excelRow": 37
       }
     }
   ],
@@ -566,7 +566,7 @@ window.companyActivitiesByBizNo = {
       }
     },
     {
-      "date": "2025-01-20",
+      "date": "2026-01-20",
       "type": "재직자교육",
       "title": "가족회사 임직원 대상 생성형 AI 실무 재직자 교육",
       "result": "AI 실무 교육을 통한 업무 생산성 향상",
@@ -620,6 +620,17 @@ window.companyActivitiesByBizNo = {
   ],
   "4228103905": [
     {
+      "date": "2025-05-29",
+      "type": "기술이전",
+      "title": "기술이전",
+      "result": "협약서",
+      "dept": "기술사업화팀",
+      "owner": "김지현",
+      "source": {
+        "excelRow": 88
+      }
+    },
+    {
       "date": "2025-11-11",
       "type": "애로컨설팅",
       "title": "인천대학교 애로컨설팅 지원사업",
@@ -629,17 +640,6 @@ window.companyActivitiesByBizNo = {
       "evidenceUrl": "애로 컨설팅 지원",
       "source": {
         "excelRow": 34
-      }
-    },
-    {
-      "date": "2025-05-29",
-      "type": "기술이전",
-      "title": "기술이전",
-      "result": "협약서",
-      "dept": "기술사업화팀",
-      "owner": "김지현",
-      "source": {
-        "excelRow": 88
       }
     }
   ],
@@ -658,18 +658,6 @@ window.companyActivitiesByBizNo = {
     }
   ],
   "1068611978": [
-    {
-      "date": "2025-11-29",
-      "type": "애로컨설팅",
-      "title": "인천대학교 애로컨설팅 지원사업",
-      "result": "애로 컨설팅 지원",
-      "dept": "산학협력팀",
-      "owner": "서영주",
-      "evidenceUrl": "애로 컨설팅 지원",
-      "source": {
-        "excelRow": 36
-      }
-    },
     {
       "date": "2025-09-19",
       "type": "기술이전",
@@ -691,6 +679,18 @@ window.companyActivitiesByBizNo = {
       "evidenceUrl": "협약서",
       "source": {
         "excelRow": 131
+      }
+    },
+    {
+      "date": "2025-11-29",
+      "type": "애로컨설팅",
+      "title": "인천대학교 애로컨설팅 지원사업",
+      "result": "애로 컨설팅 지원",
+      "dept": "산학협력팀",
+      "owner": "서영주",
+      "evidenceUrl": "애로 컨설팅 지원",
+      "source": {
+        "excelRow": 36
       }
     }
   ],
@@ -752,18 +752,6 @@ window.companyActivitiesByBizNo = {
   ],
   "1198689322": [
     {
-      "date": "2026-01-31",
-      "type": "애로컨설팅",
-      "title": "인천대학교 애로컨설팅 지원사업",
-      "result": "애로 컨설팅 지원",
-      "dept": "산학협력팀",
-      "owner": "서영주",
-      "evidenceUrl": "애로 컨설팅 지원",
-      "source": {
-        "excelRow": 43
-      }
-    },
-    {
       "date": "2025-10-17",
       "type": "간담회",
       "title": "제2차 유료 가족회사 간담회",
@@ -773,6 +761,18 @@ window.companyActivitiesByBizNo = {
       "evidenceUrl": "https://www.incheonnews.com/news/articleView.html?idxno=430314",
       "source": {
         "excelRow": 48
+      }
+    },
+    {
+      "date": "2026-01-31",
+      "type": "애로컨설팅",
+      "title": "인천대학교 애로컨설팅 지원사업",
+      "result": "애로 컨설팅 지원",
+      "dept": "산학협력팀",
+      "owner": "서영주",
+      "evidenceUrl": "애로 컨설팅 지원",
+      "source": {
+        "excelRow": 43
       }
     },
     {
@@ -804,18 +804,6 @@ window.companyActivitiesByBizNo = {
   ],
   "1238131687": [
     {
-      "date": "2026-02-13",
-      "type": "애로컨설팅",
-      "title": "인천대학교 애로컨설팅 지원사업",
-      "result": "애로 컨설팅 지원",
-      "dept": "산학협력팀",
-      "owner": "서영주",
-      "evidenceUrl": "애로 컨설팅 지원",
-      "source": {
-        "excelRow": 45
-      }
-    },
-    {
       "date": "2025-07-11",
       "type": "간담회",
       "title": "제1차 유료 가족회사 간담회",
@@ -825,6 +813,18 @@ window.companyActivitiesByBizNo = {
       "evidenceUrl": "https://www.incheonilbo.com/news/articleView.html?idxno=1295992",
       "source": {
         "excelRow": 73
+      }
+    },
+    {
+      "date": "2026-02-13",
+      "type": "애로컨설팅",
+      "title": "인천대학교 애로컨설팅 지원사업",
+      "result": "애로 컨설팅 지원",
+      "dept": "산학협력팀",
+      "owner": "서영주",
+      "evidenceUrl": "애로 컨설팅 지원",
+      "source": {
+        "excelRow": 45
       }
     }
   ],
@@ -858,15 +858,15 @@ window.companyActivitiesByBizNo = {
   ],
   "3168703048": [
     {
-      "date": "2025-10-17",
+      "date": "2025-07-11",
       "type": "간담회",
-      "title": "제2차 유료 가족회사 간담회",
+      "title": "제1차 유료 가족회사 간담회",
       "result": "유료 가족회사 간 상호 협력체계 마련",
       "dept": "산학협력팀",
       "owner": "서영주",
-      "evidenceUrl": "https://www.incheonnews.com/news/articleView.html?idxno=430314",
+      "evidenceUrl": "https://www.incheonilbo.com/news/articleView.html?idxno=1295992",
       "source": {
-        "excelRow": 52
+        "excelRow": 70
       }
     },
     {
@@ -882,18 +882,6 @@ window.companyActivitiesByBizNo = {
       }
     },
     {
-      "date": "2025-07-11",
-      "type": "간담회",
-      "title": "제1차 유료 가족회사 간담회",
-      "result": "유료 가족회사 간 상호 협력체계 마련",
-      "dept": "산학협력팀",
-      "owner": "서영주",
-      "evidenceUrl": "https://www.incheonilbo.com/news/articleView.html?idxno=1295992",
-      "source": {
-        "excelRow": 70
-      }
-    },
-    {
       "date": "2025-09-19",
       "type": "기술이전",
       "title": "기술이전",
@@ -905,15 +893,27 @@ window.companyActivitiesByBizNo = {
       }
     },
     {
-      "date": "2026-02-04",
+      "date": "2025-09-22",
+      "type": "R&D과제",
+      "title": "[RISE]산학공동기술개발과제",
+      "result": "기술이전 및 연구성과",
+      "dept": "기술사업화팀",
+      "owner": "이현지",
+      "evidenceUrl": "협약서",
+      "source": {
+        "excelRow": 132
+      }
+    },
+    {
+      "date": "2025-10-17",
       "type": "간담회",
-      "title": "제3차 유료 가족회사 간담회",
+      "title": "제2차 유료 가족회사 간담회",
       "result": "유료 가족회사 간 상호 협력체계 마련",
       "dept": "산학협력팀",
       "owner": "서영주",
-      "evidenceUrl": "https://www.tournews21.com/news/articleView.html?idxno=129067",
+      "evidenceUrl": "https://www.incheonnews.com/news/articleView.html?idxno=430314",
       "source": {
-        "excelRow": 104
+        "excelRow": 52
       }
     },
     {
@@ -929,31 +929,19 @@ window.companyActivitiesByBizNo = {
       }
     },
     {
-      "date": "2025-09-22",
-      "type": "R&D과제",
-      "title": "[RISE]산학공동기술개발과제",
-      "result": "기술이전 및 연구성과",
-      "dept": "기술사업화팀",
-      "owner": "이현지",
-      "evidenceUrl": "협약서",
+      "date": "2026-02-04",
+      "type": "간담회",
+      "title": "제3차 유료 가족회사 간담회",
+      "result": "유료 가족회사 간 상호 협력체계 마련",
+      "dept": "산학협력팀",
+      "owner": "서영주",
+      "evidenceUrl": "https://www.tournews21.com/news/articleView.html?idxno=129067",
       "source": {
-        "excelRow": 132
+        "excelRow": 104
       }
     }
   ],
   "1228182903": [
-    {
-      "date": "2025-10-17",
-      "type": "간담회",
-      "title": "제2차 유료 가족회사 간담회",
-      "result": "유료 가족회사 간 상호 협력체계 마련",
-      "dept": "산학협력팀",
-      "owner": "서영주",
-      "evidenceUrl": "https://www.incheonnews.com/news/articleView.html?idxno=430314",
-      "source": {
-        "excelRow": 53
-      }
-    },
     {
       "date": "2025-03-20",
       "type": "수상",
@@ -964,6 +952,18 @@ window.companyActivitiesByBizNo = {
       "evidenceUrl": "상장",
       "source": {
         "excelRow": 76
+      }
+    },
+    {
+      "date": "2025-10-17",
+      "type": "간담회",
+      "title": "제2차 유료 가족회사 간담회",
+      "result": "유료 가족회사 간 상호 협력체계 마련",
+      "dept": "산학협력팀",
+      "owner": "서영주",
+      "evidenceUrl": "https://www.incheonnews.com/news/articleView.html?idxno=430314",
+      "source": {
+        "excelRow": 53
       }
     },
     {
@@ -981,15 +981,15 @@ window.companyActivitiesByBizNo = {
   ],
   "1318151063": [
     {
-      "date": "2025-10-17",
-      "type": "간담회",
-      "title": "제2차 유료 가족회사 간담회",
-      "result": "유료 가족회사 간 상호 협력체계 마련",
+      "date": "2025-03-20",
+      "type": "수상",
+      "title": "2025년 우수기업인 표창(비전기업협회)",
+      "result": "인천비전기업협회 소속기업 총장상 표창(상반기)",
       "dept": "산학협력팀",
-      "owner": "서영주",
-      "evidenceUrl": "https://www.incheonnews.com/news/articleView.html?idxno=430314",
+      "owner": "정진우",
+      "evidenceUrl": "상장",
       "source": {
-        "excelRow": 54
+        "excelRow": 75
       }
     },
     {
@@ -1005,15 +1005,15 @@ window.companyActivitiesByBizNo = {
       }
     },
     {
-      "date": "2025-03-20",
-      "type": "수상",
-      "title": "2025년 우수기업인 표창(비전기업협회)",
-      "result": "인천비전기업협회 소속기업 총장상 표창(상반기)",
+      "date": "2025-10-17",
+      "type": "간담회",
+      "title": "제2차 유료 가족회사 간담회",
+      "result": "유료 가족회사 간 상호 협력체계 마련",
       "dept": "산학협력팀",
-      "owner": "정진우",
-      "evidenceUrl": "상장",
+      "owner": "서영주",
+      "evidenceUrl": "https://www.incheonnews.com/news/articleView.html?idxno=430314",
       "source": {
-        "excelRow": 75
+        "excelRow": 54
       }
     }
   ],
@@ -1047,18 +1047,6 @@ window.companyActivitiesByBizNo = {
   ],
   "1218127227": [
     {
-      "date": "2025-10-17",
-      "type": "간담회",
-      "title": "제2차 유료 가족회사 간담회",
-      "result": "유료 가족회사 간 상호 협력체계 마련",
-      "dept": "산학협력팀",
-      "owner": "서영주",
-      "evidenceUrl": "https://www.incheonnews.com/news/articleView.html?idxno=430314",
-      "source": {
-        "excelRow": 57
-      }
-    },
-    {
       "date": "2025-07-11",
       "type": "간담회",
       "title": "제1차 유료 가족회사 간담회",
@@ -1068,6 +1056,18 @@ window.companyActivitiesByBizNo = {
       "evidenceUrl": "https://www.incheonilbo.com/news/articleView.html?idxno=1295992",
       "source": {
         "excelRow": 65
+      }
+    },
+    {
+      "date": "2025-10-17",
+      "type": "간담회",
+      "title": "제2차 유료 가족회사 간담회",
+      "result": "유료 가족회사 간 상호 협력체계 마련",
+      "dept": "산학협력팀",
+      "owner": "서영주",
+      "evidenceUrl": "https://www.incheonnews.com/news/articleView.html?idxno=430314",
+      "source": {
+        "excelRow": 57
       }
     },
     {
@@ -1085,18 +1085,6 @@ window.companyActivitiesByBizNo = {
   ],
   "1228126347": [
     {
-      "date": "2025-10-17",
-      "type": "간담회",
-      "title": "제2차 유료 가족회사 간담회",
-      "result": "유료 가족회사 간 상호 협력체계 마련",
-      "dept": "산학협력팀",
-      "owner": "서영주",
-      "evidenceUrl": "https://www.incheonnews.com/news/articleView.html?idxno=430314",
-      "source": {
-        "excelRow": 58
-      }
-    },
-    {
       "date": "2025-07-11",
       "type": "간담회",
       "title": "제1차 유료 가족회사 간담회",
@@ -1106,6 +1094,18 @@ window.companyActivitiesByBizNo = {
       "evidenceUrl": "https://www.incheonilbo.com/news/articleView.html?idxno=1295992",
       "source": {
         "excelRow": 71
+      }
+    },
+    {
+      "date": "2025-10-17",
+      "type": "간담회",
+      "title": "제2차 유료 가족회사 간담회",
+      "result": "유료 가족회사 간 상호 협력체계 마련",
+      "dept": "산학협력팀",
+      "owner": "서영주",
+      "evidenceUrl": "https://www.incheonnews.com/news/articleView.html?idxno=430314",
+      "source": {
+        "excelRow": 58
       }
     }
   ],
@@ -1245,6 +1245,18 @@ window.companyActivitiesByBizNo = {
       }
     },
     {
+      "date": "2026-01-20",
+      "type": "재직자교육",
+      "title": "가족회사 임직원 대상 생성형 AI 실무 재직자 교육",
+      "result": "AI 실무 교육을 통한 업무 생산성 향상",
+      "dept": "산학협력팀",
+      "owner": "윤진영",
+      "evidenceUrl": "https://www.tournews21.com/news/articleView.html?idxno=127386",
+      "source": {
+        "excelRow": 123
+      }
+    },
+    {
       "date": "2026-02-04",
       "type": "간담회",
       "title": "제3차 유료 가족회사 간담회",
@@ -1254,18 +1266,6 @@ window.companyActivitiesByBizNo = {
       "evidenceUrl": "https://www.tournews21.com/news/articleView.html?idxno=129067",
       "source": {
         "excelRow": 99
-      }
-    },
-    {
-      "date": "2025-01-20",
-      "type": "재직자교육",
-      "title": "가족회사 임직원 대상 생성형 AI 실무 재직자 교육",
-      "result": "AI 실무 교육을 통한 업무 생산성 향상",
-      "dept": "산학협력팀",
-      "owner": "윤진영",
-      "evidenceUrl": "https://www.tournews21.com/news/articleView.html?idxno=127386",
-      "source": {
-        "excelRow": 123
       }
     }
   ],
@@ -1408,6 +1408,18 @@ window.companyActivitiesByBizNo = {
   "1408158338": [
     {
       "date": "2025-09-22",
+      "type": "R&D과제",
+      "title": "[RISE]산학공동기술개발과제",
+      "result": "기술이전 및 연구성과",
+      "dept": "기술사업화팀",
+      "owner": "이현지",
+      "evidenceUrl": "협약서",
+      "source": {
+        "excelRow": 133
+      }
+    },
+    {
+      "date": "2025-09-22",
       "type": "기술이전",
       "title": "기술이전",
       "result": "협약서",
@@ -1428,32 +1440,9 @@ window.companyActivitiesByBizNo = {
       "source": {
         "excelRow": 130
       }
-    },
-    {
-      "date": "2025-09-22",
-      "type": "R&D과제",
-      "title": "[RISE]산학공동기술개발과제",
-      "result": "기술이전 및 연구성과",
-      "dept": "기술사업화팀",
-      "owner": "이현지",
-      "evidenceUrl": "협약서",
-      "source": {
-        "excelRow": 133
-      }
     }
   ],
   "1108150688": [
-    {
-      "date": "2025-09-23",
-      "type": "기술이전",
-      "title": "기술이전",
-      "result": "협약서",
-      "dept": "기술사업화팀",
-      "owner": "김지현",
-      "source": {
-        "excelRow": 94
-      }
-    },
     {
       "date": "2025-09-22",
       "type": "R&D과제",
@@ -1465,20 +1454,20 @@ window.companyActivitiesByBizNo = {
       "source": {
         "excelRow": 134
       }
-    }
-  ],
-  "1438603496": [
+    },
     {
-      "date": "2025-09-24",
+      "date": "2025-09-23",
       "type": "기술이전",
       "title": "기술이전",
       "result": "협약서",
       "dept": "기술사업화팀",
       "owner": "김지현",
       "source": {
-        "excelRow": 95
+        "excelRow": 94
       }
-    },
+    }
+  ],
+  "1438603496": [
     {
       "date": "2025-09-22",
       "type": "R&D과제",
@@ -1490,20 +1479,20 @@ window.companyActivitiesByBizNo = {
       "source": {
         "excelRow": 135
       }
-    }
-  ],
-  "2878601707": [
+    },
     {
-      "date": "2025-09-22",
+      "date": "2025-09-24",
       "type": "기술이전",
       "title": "기술이전",
       "result": "협약서",
       "dept": "기술사업화팀",
       "owner": "김지현",
       "source": {
-        "excelRow": 96
+        "excelRow": 95
       }
-    },
+    }
+  ],
+  "2878601707": [
     {
       "date": "2025-09-22",
       "type": "R&D과제",
@@ -1514,6 +1503,17 @@ window.companyActivitiesByBizNo = {
       "evidenceUrl": "협약서",
       "source": {
         "excelRow": 136
+      }
+    },
+    {
+      "date": "2025-09-22",
+      "type": "기술이전",
+      "title": "기술이전",
+      "result": "협약서",
+      "dept": "기술사업화팀",
+      "owner": "김지현",
+      "source": {
+        "excelRow": 96
       }
     }
   ],
@@ -1673,7 +1673,7 @@ window.companyActivitiesByBizNo = {
   ],
   "1398142253": [
     {
-      "date": "2025-01-20",
+      "date": "2026-01-20",
       "type": "재직자교육",
       "title": "가족회사 임직원 대상 생성형 AI 실무 재직자 교육",
       "result": "AI 실무 교육을 통한 업무 생산성 향상",
@@ -1687,7 +1687,7 @@ window.companyActivitiesByBizNo = {
   ],
   "1318607747": [
     {
-      "date": "2025-01-20",
+      "date": "2026-01-20",
       "type": "재직자교육",
       "title": "가족회사 임직원 대상 생성형 AI 실무 재직자 교육",
       "result": "AI 실무 교육을 통한 업무 생산성 향상",
@@ -1701,7 +1701,7 @@ window.companyActivitiesByBizNo = {
   ],
   "1370463590": [
     {
-      "date": "2025-01-20",
+      "date": "2026-01-20",
       "type": "재직자교육",
       "title": "가족회사 임직원 대상 생성형 AI 실무 재직자 교육",
       "result": "AI 실무 교육을 통한 업무 생산성 향상",
@@ -1715,7 +1715,7 @@ window.companyActivitiesByBizNo = {
   ],
   "1398110843": [
     {
-      "date": "2025-01-20",
+      "date": "2026-01-20",
       "type": "재직자교육",
       "title": "가족회사 임직원 대상 생성형 AI 실무 재직자 교육",
       "result": "AI 실무 교육을 통한 업무 생산성 향상",
@@ -1729,7 +1729,7 @@ window.companyActivitiesByBizNo = {
   ],
   "1318633959": [
     {
-      "date": "2025-01-20",
+      "date": "2026-01-20",
       "type": "재직자교육",
       "title": "가족회사 임직원 대상 생성형 AI 실무 재직자 교육",
       "result": "AI 실무 교육을 통한 업무 생산성 향상",
@@ -1743,7 +1743,7 @@ window.companyActivitiesByBizNo = {
   ],
   "1168602909": [
     {
-      "date": "2025-01-20",
+      "date": "2026-01-20",
       "type": "재직자교육",
       "title": "가족회사 임직원 대상 생성형 AI 실무 재직자 교육",
       "result": "AI 실무 교육을 통한 업무 생산성 향상",
@@ -1757,7 +1757,7 @@ window.companyActivitiesByBizNo = {
   ],
   "3401802105": [
     {
-      "date": "2025-01-20",
+      "date": "2026-01-20",
       "type": "재직자교육",
       "title": "가족회사 임직원 대상 생성형 AI 실무 재직자 교육",
       "result": "AI 실무 교육을 통한 업무 생산성 향상",
@@ -1771,7 +1771,7 @@ window.companyActivitiesByBizNo = {
   ],
   "1398125536": [
     {
-      "date": "2025-01-20",
+      "date": "2026-01-20",
       "type": "재직자교육",
       "title": "가족회사 임직원 대상 생성형 AI 실무 재직자 교육",
       "result": "AI 실무 교육을 통한 업무 생산성 향상",
@@ -1784,30 +1784,6 @@ window.companyActivitiesByBizNo = {
     }
   ],
   "1608801240": [
-    {
-      "date": "2025-12-26",
-      "type": "발전기금",
-      "title": "산학협력단 발전기금",
-      "result": "산학협력단 발전기금(1호)",
-      "dept": "산학협력팀",
-      "owner": "윤진영",
-      "evidenceUrl": "발전기금 영수증",
-      "source": {
-        "excelRow": 127
-      }
-    },
-    {
-      "date": "2025-08-18",
-      "type": "R&D과제",
-      "title": "AI 글로벌 빅테크 육성사업(경쟁형 R&BD)",
-      "result": "연구성과",
-      "dept": "연구지원팀",
-      "owner": "노마로",
-      "evidenceUrl": "과제번호(202504130001)",
-      "source": {
-        "excelRow": 137
-      }
-    },
     {
       "date": "2025-08-05",
       "type": "기술이전",
@@ -1828,6 +1804,30 @@ window.companyActivitiesByBizNo = {
       "owner": "김지현",
       "source": {
         "excelRow": 139
+      }
+    },
+    {
+      "date": "2025-08-18",
+      "type": "R&D과제",
+      "title": "AI 글로벌 빅테크 육성사업(경쟁형 R&BD)",
+      "result": "연구성과",
+      "dept": "연구지원팀",
+      "owner": "노마로",
+      "evidenceUrl": "과제번호(202504130001)",
+      "source": {
+        "excelRow": 137
+      }
+    },
+    {
+      "date": "2025-12-26",
+      "type": "발전기금",
+      "title": "산학협력단 발전기금",
+      "result": "산학협력단 발전기금(1호)",
+      "dept": "산학협력팀",
+      "owner": "윤진영",
+      "evidenceUrl": "발전기금 영수증",
+      "source": {
+        "excelRow": 127
       }
     }
   ],
