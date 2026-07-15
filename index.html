@@ -29,6 +29,25 @@
       height: 32px;
       width: auto;
     }
+    /* 홈페이지 헤더 이미지의 왼쪽(선풍기+횃불이)만 보이는 창 */
+    .logo-title .live-mascot-crop {
+      display: inline-block;
+      height: 50px;
+      width: 45px;
+      overflow: hidden;
+      flex: none;
+    }
+    .logo-title .live-mascot-crop img {
+      height: 50px;
+      width: auto;
+      max-width: none;
+      display: block;
+      mix-blend-mode: multiply; /* 흰 배경 투명화 */
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    /* 예비 이미지(mascot_fan.png)로 전환된 경우: 창 제한 해제 */
+    .logo-title .live-mascot-crop.fb { width: auto; overflow: visible; }
     .logo-title h1 {
       font-size: 20px;
       font-weight: 700;
@@ -515,6 +534,11 @@
     <div class="logo-title">
       <img src="inu_logo.png" alt="INU 로고" class="inu-globe">
       <h1>인천대학교 가족회사 검색</h1>
+      <!-- 인천대 홈페이지 헤더에서 선풍기+횃불이 부분만 잘라 보여주는 창 (애니메이션 유지) -->
+      <span class="live-mascot-crop" title="횃불이">
+        <img src="https://www.inu.ac.kr/sites/inu/images/common/logo-header.png" alt="횃불이"
+             onerror="this.onerror=null;this.src='mascot_fan.png';this.parentElement.classList.add('fb');">
+      </span>
     </div>
 
     <div class="search-box">
