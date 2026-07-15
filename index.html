@@ -425,6 +425,86 @@
     .activity-box .act-date, 
     .activity-box .act-type{ color:#111827 !important; }
     .activity-box .act-title{ color:#111827 !important; font-weight:700 !important; }
+/* ===== 시세 티커 바 ===== */
+.ticker-bar{
+  margin-top: 10px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  height: 46px;
+}
+
+/* ===== 플로팅 챗봇 버튼 + 패널 ===== */
+.chat-fab{
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #004090;
+  color: #fff;
+  font-size: 26px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,45,102,.35);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex: none;
+  transition: transform .15s ease;
+}
+.chat-fab:hover{ transform: scale(1.06); }
+.chat-panel{
+  display: none;
+  position: fixed;
+  right: 20px;
+  bottom: 88px;
+  width: 400px;
+  max-width: calc(100vw - 24px);
+  height: 640px;
+  max-height: calc(100vh - 110px);
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.28);
+  z-index: 1100;
+  overflow: hidden;
+}
+.chat-panel.open{ display: block; }
+.chat-panel iframe{
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+.chat-panel .chat-close{
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,.45);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 2;
+  padding: 0;
+  flex: none;
+}
+@media (max-width: 768px){
+  .chat-panel{
+    right: 12px;
+    left: 12px;
+    width: auto;
+    bottom: 84px;
+    height: 72vh;
+  }
+}
 
 </style>
   
@@ -463,6 +543,30 @@
   </div>
   <div class="status-right">
     <span id="nowWeather">🌤️ 날씨 불러오는 중…</span>
+    <span id="todayVisits" style="display:none;">👥 오늘 방문 --명</span>
+  </div>
+</div>
+
+<!-- ===== 증시/환율/금 시세 티커 (TradingView 무료 위젯) ===== -->
+<div id="tickerBar" class="ticker-bar" style="display:none;">
+  <div class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+    {
+      "symbols": [
+        { "proName": "AMEX:EWY",        "title": "Korea (EWY)" },
+        { "proName": "FOREXCOM:NSXUSD", "title": "NASDAQ 100" },
+        { "proName": "FOREXCOM:SPXUSD", "title": "S&P 500" },
+        { "proName": "FX_IDC:USDKRW",   "title": "USD/KRW" },
+        { "proName": "TVC:GOLD",        "title": "Gold" }
+      ],
+      "showSymbolLogo": true,
+      "isTransparent": true,
+      "displayMode": "adaptive",
+      "colorTheme": "light",
+      "locale": "en"
+    }
+    </script>
   </div>
 </div>
 
@@ -481,6 +585,13 @@
     </div>
   </div>
 
+  <!-- ===== 플로팅 챗봇 (산학협력팀 통합 안내) ===== -->
+  <button id="chatFab" class="chat-fab" type="button" title="산학협력팀 안내 챗봇" aria-label="산학협력팀 안내 챗봇 열기">💬</button>
+  <div id="chatPanel" class="chat-panel" aria-hidden="true">
+    <button id="chatClose" class="chat-close" type="button" aria-label="챗봇 닫기">×</button>
+    <iframe id="chatFrame" title="INU 산학협력팀 통합 안내 챗봇"></iframe>
+  </div>
+
   <script src="familyCompanies.js"></script>
   <script src="companyActivities.js"></script>
 
@@ -497,6 +608,9 @@
     let mapContainer = document.getElementById('map');
     let map = null; 
     let geocoder = null;
+    let marker = null;      // ✅ 지도 마커 재사용 (핀 중복 방지)
+    let infowindow = null;  // ✅ 인포윈도우 재사용
+    let currentRows = [];   // ✅ 현재 검색 결과 (지도 클릭 시 사용)
 
     // 1. 등급별 카운트 및 옵션 생성
     function initMembershipOptions() {
@@ -615,12 +729,14 @@ function renderTable(rows, options = {}) {
           <tbody>
       `;
 
+      currentRows = rows; // ✅ 지도 클릭 시 사용할 데이터 저장
+
       rows.forEach((row, rowIndex) => {
         const companyClass = highlightCompany ? "highlight" : "";
         const ceoClass = highlightCeo ? "highlight" : "";
-        // 주소 클릭 시 지도 함수 호출
+        // 주소 클릭 시 지도 함수 호출 (✅ 인라인 onclick 제거 → 안전한 data 속성 방식)
         const addressDisplay = row.주소 
-          ? `<span class="map-link" onclick="openMap('${row.주소}', '${row.기업명}')">📍 ${row.주소}</span>` 
+          ? `<span class="map-link" data-map-idx="${rowIndex}">📍 ${escapeHtml(row.주소)}</span>` 
           : "";
 
         
@@ -639,14 +755,14 @@ function renderTable(rows, options = {}) {
           </tr>`;
 html += `
           <tr>
-            <td data-label="인증서 번호">${row.인증서번호 || ""}</td>
-            <td data-label="기업명" class="${companyClass}">${row.기업명 || ""}</td>
-            <td data-label="대표자" class="${ceoClass}">${row.대표자 || ""}</td>
-            <td data-label="멤버십">${row.멤버십 || ""}</td>
-            <td data-label="주요제품">${row.주요제품 || ""}</td>
-            <td data-label="업종">${row.업종 || ""}</td>
-            <td data-label="사업자등록번호">${row.사업자등록번호 || ""}</td>
-            <td data-label="추천교수">${row.추천교수 || ""}</td>
+            <td data-label="인증서 번호">${escapeHtml(row.인증서번호 || "")}</td>
+            <td data-label="기업명" class="${companyClass}">${escapeHtml(row.기업명 || "")}</td>
+            <td data-label="대표자" class="${ceoClass}">${escapeHtml(row.대표자 || "")}</td>
+            <td data-label="멤버십">${escapeHtml(row.멤버십 || "")}</td>
+            <td data-label="주요제품">${escapeHtml(row.주요제품 || "")}</td>
+            <td data-label="업종">${escapeHtml(row.업종 || "")}</td>
+            <td data-label="사업자등록번호">${escapeHtml(row.사업자등록번호 || "")}</td>
+            <td data-label="추천교수">${escapeHtml(row.추천교수 || "")}</td>
             <td data-label="주소">${addressDisplay}</td>
             <td data-label="산학협력 활동">${activityCell}</td>
           </tr>
@@ -658,7 +774,7 @@ html += `
       resultArea.innerHTML = html;
     }
 
-    function search() {
+    function search(pushUrl = true) {
       if (window.__hideStatus) window.__hideStatus();
       const companyRaw = companyInput.value.trim();
       const ceoRaw = ceoInput.value.trim();
@@ -670,6 +786,15 @@ html += `
       if (!companyKeyword && !ceoKeyword && !membershipVal) {
         alert("기업명, 대표자명, 또는 등급을 선택해주세요.");
         return;
+      }
+
+      // ✅ 공유 가능한 URL: 검색 조건을 주소창에 반영
+      if (pushUrl) {
+        const params = new URLSearchParams();
+        if (companyRaw) params.set("q", companyRaw);
+        if (ceoRaw) params.set("ceo", ceoRaw);
+        if (membershipVal) params.set("grade", membershipVal);
+        history.pushState(null, "", location.pathname + "?" + params.toString());
       }
 
       const data = Array.isArray(window.familyCompanies) ? window.familyCompanies : [];
@@ -688,14 +813,38 @@ html += `
       }
     }
 
-    function resetSearch() {
+    function resetSearch(pushUrl = true) {
       if (window.__showStatus) window.__showStatus();
       companyInput.value = "";
       ceoInput.value = "";
       membershipSelect.value = "";
       resultArea.innerHTML = `<div class="no-result">검색 조건을 입력 후 [검색] 버튼을 눌러주세요.</div>`;
       companyInput.focus();
+      // ✅ 초기화 시 주소창의 검색 조건도 제거
+      if (pushUrl && location.search) {
+        history.pushState(null, "", location.pathname);
+      }
     }
+
+    // ✅ 주소창의 검색 조건(?q=...&ceo=...&grade=...)을 읽어 자동 검색
+    function applyStateFromURL() {
+      const params = new URLSearchParams(location.search);
+      const q = params.get("q") || "";
+      const ceo = params.get("ceo") || "";
+      const grade = params.get("grade") || "";
+      companyInput.value = q;
+      ceoInput.value = ceo;
+      const gradeExists = [...membershipSelect.options].some(o => o.value === grade);
+      membershipSelect.value = gradeExists ? grade : "";
+      if (q || ceo || (grade && gradeExists)) {
+        search(false); // 뒤로가기 기록을 새로 만들지 않음
+      } else {
+        resetSearch(false);
+      }
+    }
+
+    // ✅ 브라우저 뒤로가기/앞으로가기 시 검색 상태 복원
+    window.addEventListener("popstate", applyStateFromURL);
 
     // --- 지도 기능 (수정됨) ---
     function openMap(address, companyName) {
@@ -731,14 +880,18 @@ html += `
 
           const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
+          // ✅ 이전 마커/인포윈도우 제거 (핀이 계속 쌓이는 버그 수정)
+          if (marker) marker.setMap(null);
+          if (infowindow) infowindow.close();
+
           // 마커 생성 및 인포윈도우
-          const marker = new kakao.maps.Marker({
+          marker = new kakao.maps.Marker({
             map: map,
             position: coords
           });
 
-          const infowindow = new kakao.maps.InfoWindow({
-            content: `<div style="width:150px;text-align:center;padding:6px 0;font-size:13px;">${companyName}</div>`
+          infowindow = new kakao.maps.InfoWindow({
+            content: `<div style="width:150px;text-align:center;padding:6px 0;font-size:13px;">${escapeHtml(companyName)}</div>`
           });
           infowindow.open(map, marker);
 
@@ -763,12 +916,21 @@ html += `
     }
 
     initMembershipOptions();
+    applyStateFromURL(); // ✅ 공유 링크로 들어온 경우 자동 검색
 
     searchBtn.addEventListener("click", search);
     resetBtn.addEventListener("click", resetSearch);
 
-    // 활동( n ) 보기 토글
+    // 활동( n ) 보기 토글 + 지도 링크 클릭 (이벤트 위임)
     resultArea.addEventListener("click", (e) => {
+      // ✅ 지도 보기 링크
+      const mapLink = e.target.closest && e.target.closest(".map-link");
+      if (mapLink) {
+        const row = currentRows[Number(mapLink.getAttribute("data-map-idx"))];
+        if (row && row.주소) openMap(row.주소, row.기업명);
+        return;
+      }
+
       const btn = e.target.closest && e.target.closest(".activity-toggle");
       if (!btn) return;
       const idx = btn.getAttribute("data-act-idx");
@@ -850,7 +1012,7 @@ html += `
     try{
       const url =
         `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}` +
-        `&current=temperature_2m,weather_code,wind_speed_10m&timezone=Asia/Seoul`;
+        `&current=temperature_2m,weather_code,wind_speed_10m&wind_speed_unit=ms&timezone=Asia/Seoul`;
       const res = await fetch(url, { cache: "no-store" });
       const data = await res.json();
       const c = data.current;
@@ -867,6 +1029,8 @@ html += `
     const bar = $('statusBar');
     if (!bar) return;
     bar.style.display = 'flex';
+    const ticker = $('tickerBar');
+    if (ticker) ticker.style.display = 'block';
     startClock();
     loadWeatherOnce();
   }
@@ -875,15 +1039,82 @@ html += `
     const bar = $('statusBar');
     if (!bar) return;
     bar.style.display = 'none';
+    const ticker = $('tickerBar');
+    if (ticker) ticker.style.display = 'none';
     stopClock();
+  }
+
+  // ===== 방문자 수 (GoatCounter — 무료) =====
+  // ① https://www.goatcounter.com 에서 무료 가입 (2분)
+  // ② 가입 시 정한 코드(예: inu-family)를 아래에 입력
+  const GOATCOUNTER_CODE = "YOUR_CODE_HERE"; // ← 여기만 바꾸면 됩니다!
+
+  function initVisitCounter(){
+    if (!GOATCOUNTER_CODE || GOATCOUNTER_CODE === "YOUR_CODE_HERE") return; // 미설정 시 조용히 건너뜀
+
+    // 방문 기록 스크립트 삽입
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = "https://gc.zgo.at/count.js";
+    s.setAttribute("data-goatcounter", `https://${GOATCOUNTER_CODE}.goatcounter.com/count`);
+    document.head.appendChild(s);
+
+    // "오늘 방문자" 뱃지 (자정 기준 자동 리셋: 오늘 날짜부터 집계)
+    const el = $('todayVisits');
+    if (!el) return;
+    const d = new Date();
+    const today = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const path = encodeURIComponent(location.pathname);
+    fetch(`https://${GOATCOUNTER_CODE}.goatcounter.com/counter/${path}.json?start=${today}`)
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data && data.count !== undefined){
+          el.textContent = `👥 오늘 방문 ${String(data.count).trim()}명`;
+          el.style.display = '';
+        }
+      })
+      .catch(() => {}); // 실패 시 뱃지 숨김 유지
+  }
+
+  // ===== 플로팅 챗봇 =====
+  function initChatWidget(){
+    const fab = $('chatFab');
+    const panel = $('chatPanel');
+    const frame = $('chatFrame');
+    const closeBtn = $('chatClose');
+    if (!fab || !panel || !frame) return;
+
+    function openChat(){
+      // ✅ 처음 열 때만 챗봇 로딩 (평소엔 페이지를 가볍게 유지)
+      if (!frame.src) frame.src = "chatbot.html";
+      panel.classList.add('open');
+      panel.setAttribute('aria-hidden', 'false');
+      fab.textContent = '×';
+    }
+    function closeChat(){
+      panel.classList.remove('open');
+      panel.setAttribute('aria-hidden', 'true');
+      fab.textContent = '💬';
+    }
+    fab.addEventListener('click', () => {
+      panel.classList.contains('open') ? closeChat() : openChat();
+    });
+    if (closeBtn) closeBtn.addEventListener('click', closeChat);
   }
 
   window.__showStatus = showStatus;
   window.__hideStatus = hideStatus;
 
   document.addEventListener('DOMContentLoaded', () => {
-    showStatus();
+    // ✅ 공유 링크(?q=...)로 들어온 경우: 검색 결과가 이미 표시 중이므로 상태바는 숨김 유지
+    if (new URLSearchParams(location.search).toString()) {
+      hideStatus();
+    } else {
+      showStatus();
+    }
     triggerLogoSpin();
+    initVisitCounter();
+    initChatWidget();
 
     const searchBtn = $('searchBtn');
     if (searchBtn) searchBtn.addEventListener('click', hideStatus);
